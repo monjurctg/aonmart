@@ -1,0 +1,92 @@
+.product_sidebar_closeBtn {
+  background-color: #1c733e !important;
+  color: #ffff !important;
+  height: 40px;
+  width: 40px;
+  border-radius: 50% !important;
+  font-size: 2rem !important;
+  float: right;
+  margin: 10px;
+  position: relative;
+}
+.product_sidebar_closeBtn i.far.fa-times-circle {
+  position: absolute;
+  position: absolute;
+  top: 8%;
+  left: 8%;
+}
+
+.product_sidebar_menu {
+  width: 250px;
+  position: fixed;
+  left: 0;
+  top: 12%;
+  margin-top: 0px;
+  height: 100vh;
+  /* border-right: 2px solid #1c733e; */
+}
+
+@media only screen and (max-width: 567px) {
+  .product_sidebar_menu {
+    width: 100% !important;
+    /* position: fixed;
+    left: 0;
+    top: 12%;
+    margin-top: 0px;
+    height: 100vh; */
+    /* border-right: 2px solid #1c733e; */
+  }
+}
+
+/* 
+.rs-btn-subtle.rs-btn-focus, .rs-btn-subtle:before,
+.rs-sidenav-default.rs-sidenav-collapse-in .rs-dropdown-menu > li > .rs-dropdown-item-content:before,
+.rs-sidenav-default.rs-sidenav-collapsing .rs-dropdown-menu > li > .rs-dropdown-item-content:before,
+.rs-sidenav-default.rs-sidenav-collapse-in .rs-dropdown-item-content > .rs-dropdown-menu-toggle:before
+{
+  content: '';
+  height: 2px;
+  left: 50%;
+  right: 50%;
+  top: 0;
+  position: absolute;
+  background: #1c733e;
+  transition: 0.5s;
+  -webkit-transition: 0.5s;
+}
+.rs-btn-subtle.rs-btn-focus, .rs-btn-subtle:hover:before,
+.rs-sidenav-default.rs-sidenav-collapse-in .rs-dropdown-menu > li > .rs-dropdown-item-content:hover:before,
+.rs-sidenav-default.rs-sidenav-collapsing .rs-dropdown-menu > li > .rs-dropdown-item-content:hover:before,
+.rs-sidenav-default.rs-sidenav-collapse-in .rs-dropdown-item-content > .rs-dropdown-menu-toggle:hover:before
+
+{
+  left: 0;
+  right: 0;
+} */
+
+.product_sidebar_icon {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.rs-sidenav .rs-nav-item .rs-nav-item-content,
+.rs-sidenav .rs-dropdown .rs-dropdown-toggle {
+  font-size: 16px !important;
+  line-height: 1.25;
+  font-weight: 600;
+  color: black;
+  padding-left: 30px !important;
+  width: 100%;
+  white-space: normal !important;
+  font-family: sans-serif;
+  position: relative;
+}
+/* ul.rs-dropdown-menu.rs-dropdown-menu-collapse-in:after {
+  content: "";
+  position: absolute;
+  left: 35px;
+  top: 70px;
+  width: 1px;
+  height: 85%;
+  background-color: #c6c6c6;
+} */

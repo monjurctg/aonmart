@@ -1,0 +1,31 @@
+/* @media only screen and (max-width: 991px) {
+  .right-nav-menu .right-nav-menu-toggle {
+    display: block;
+    width: 35px;
+    height: 35px;
+    right: -35px;
+    top: 0;
+    background-color: #d6d6d6;
+    box-shadow: 0px 0px 20px 0px rgb(89 184 40 / 6%);
+    position: absolute;
+    text-align: center;
+    border-radius: 3px;
+    color: #1c733e;
+    line-height: 37px;
+  }
+  .right-nav-menu {
+    position: fixed;
+    left: -260px;
+    width: 250px;
+    overflow: visible;
+    top: 25%;
+    transition: all 0.3s ease;
+    z-index: 98;
+  }
+  .right-nav-menu.open {
+    left: 0px;
+  }
+  .right-nav-menu .right-nav-menu-toggle i {
+    font-size: 20px;
+  }
+} */

@@ -1,0 +1,51 @@
+/*-- 
+    - Section Padding
+-------------------------------------*/
+.section-ptb {
+    padding: 100px 0;
+  }
+  @media only screen and (min-width: 992px) {
+    .section-ptb {
+      padding: 80px 0;
+    }
+  }
+  @media only screen and (min-width: 768px) {
+    .section-ptb {
+      padding: 50px 0;
+    }
+  }
+  @media only screen and (max-width: 767px) {
+    .section-ptb {
+      padding: 40px 0;
+    }
+  }
+  @media only screen and (max-width: 479px) {
+    .section-ptb {
+      padding: 40px 0;
+    }
+  }
+  
+  .section-ptb-90 {
+    padding: 50px 0;
+  }
+  @media only screen and (min-width: 992px) {
+    .section-ptb-90 {
+      padding: 50px 0;
+    }
+  }
+  @media only screen and (min-width: 768px) {
+    .section-ptb-90 {
+      padding: 50px 0;
+    }
+  }
+  @media only screen and (max-width: 767px) {
+    .section-ptb-90 {
+      padding: 40px 0;
+    }
+  }
+  @media only screen and (max-width: 479px) {
+    .section-ptb-90 {
+      padding: 30px 0;
+    }
+  }
+  

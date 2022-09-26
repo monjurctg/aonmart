@@ -1,0 +1,55 @@
+.react-confirm-alert-body {
+  border: 2px solid #1c733e !important;
+}
+.address-list {
+  position: relative;
+}
+
+.pagination {
+  /* float: right; */
+  /* overflow: hidden; */
+  top: 10;
+  display: flex;
+  justify-content: center;
+  margin: 10px 0px;
+}
+
+.pagination li.page-item {
+  padding: 0 !important;
+  border-bottom: 0px !important;
+}
+.page-item .page-link {
+  color: #1c733e !important;
+}
+.pagination li.page-item.active {
+  background-color: #1c733e;
+}
+
+.page-item.active .page-link {
+  background-color: #1c733e !important;
+  border-color: #1c733e !important;
+  color: #fff!important;
+}
+.product_order_sub_container{
+  box-shadow: 0 .125rem .25rem rgba(0,0,0,.075)!important;
+  margin: 10px;
+  padding: 10px;
+}
+.product_order_sub_container img{
+  max-height: 70px;
+}
+
+.invoices_barcode text{
+  display: none!important;
+}
+.invoice_product {
+  border-bottom: 1px solid #e9e4e4;
+  padding: 10px;
+}
+
+.sideBarOpen{
+  left: -100% !important;
+  transition: 0.4s;
+}
+
+

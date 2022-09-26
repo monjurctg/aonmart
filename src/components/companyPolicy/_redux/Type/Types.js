@@ -1,0 +1,1 @@
+export const GET_COMPANY_POLICY = "GET_COMPANY_POLICY";
