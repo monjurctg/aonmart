@@ -117,7 +117,7 @@ export const loginAction = (loginInput) => (dispatch) => {
   };
 
   try {
-    Axios.post(`${baseURL}/login`, loginInput, axiosConfig)
+    Axios.post(`/login`, loginInput, axiosConfig)
       .then((res) => {
         if (res.status) {
           response.userData = res.data.data;
