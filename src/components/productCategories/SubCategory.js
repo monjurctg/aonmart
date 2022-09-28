@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useDispatch, useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import ItemNotFound from "../master/itemNotFound/ItemNotFound";
 import SimpleLoading from "../master/simpleLoading/SimpleLoading";
@@ -10,10 +10,10 @@ import {
   getCategoriesProducts,
   getMainSubCategoryList,
   setId,
-  setPageA
+  setPageA,
 } from "./_redux/Action/ProductCategoriesAction";
 
-const SubCategory = ({ id }) => {
+const SubCategory = ({id}) => {
   const dispatch = useDispatch();
   const [idNow, setidNow] = useState(id);
   // console.log("idNow :>> ", idNow);
@@ -47,8 +47,6 @@ const SubCategory = ({ id }) => {
     dispatch(setId(id));
   }, [id, isRemove]);
 
-
-
   let fetchMoreData = () => {
     setpage(page + 1);
     dispatch(setPageA());
@@ -78,6 +76,7 @@ const SubCategory = ({ id }) => {
     }
     // dispatch(getCategoriesProducts(id,page));
   }, [categoriesAllProducts]);
+  console.log("first");
 
   // console.log('products', products)
   // useEffect(() => {
@@ -132,8 +131,7 @@ const SubCategory = ({ id }) => {
               // inverse={true}
               hasMore={products.length < categoriesAllProducts?.meta?.total}
               loader={<h4>Loading...</h4>}
-              style={{ overflow: "hidden" }}
-            >
+              style={{overflow: "hidden"}}>
               <div className="row">
                 {products.length > 0 &&
                   products.map((item, index) => (
@@ -144,7 +142,7 @@ const SubCategory = ({ id }) => {
           )}
         </div>
       </div>
-          {/* <div className="product-section py-5">
+      {/* <div className="product-section py-5">
         <div className="container">
           {products?.length && (
             <InfiniteScroll
