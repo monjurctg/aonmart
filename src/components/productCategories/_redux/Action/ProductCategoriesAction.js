@@ -1,5 +1,5 @@
 import Axios from "axios";
-import {showToast} from "../../../master/Helper/Notification";
+import { showToast } from "../../../master/Helper/Notification";
 import * as Types from "../Type/Types";
 
 const access_token = JSON.parse(localStorage.getItem("access_token"));
@@ -161,6 +161,7 @@ export const getMainSubSubCategory = (sub_category_id) => (dispatch) => {
     axiosConfig
   )
     .then((res) => {
+      // console.log('ressss :>> ', res);
       responseData.isLoading = false;
       responseData.status = true;
       responseData.subSubParent = res.data.parent;
@@ -350,7 +351,7 @@ export const getSubCategoriesProducts = (SubCategory_id) => (dispatch) => {
       responseData.isLoading = false;
       responseData.status = true;
       // responseData.subParent = res.data.parent;
-      responseData.data = res.data.data;
+      responseData.data = res.data;
       dispatch({
         type: Types.GET_SUB_CATEGORIES_PRODUCTS,
         payload: responseData,

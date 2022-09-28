@@ -1,21 +1,23 @@
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {
-  categoryProductFilter,
-  getMainSubSubCategory,
-  getSubCategoriesProducts,
-} from "./_redux/Action/ProductCategoriesAction";
-import CategoryCard from "./partials/CategoryCard";
-import {Breadcrumb} from "react-bootstrap";
-import {Link} from "react-router-dom";
-import {useLocation} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useDispatch, useSelector } from "react-redux";
 import SimpleLoading from "../master/simpleLoading/SimpleLoading";
 import ProductMiniCard from "../productMiniCard/ProductMiniCard";
-import ItemNotFound from "../master/itemNotFound/ItemNotFound";
+import CategoryCard from "./partials/CategoryCard";
+import {
+  getMainSubSubCategory,
+  getSubCategoriesProducts,
+  setPageA
+} from "./_redux/Action/ProductCategoriesAction";
 
-const SubSubCategory = ({id}) => {
+const SubSubCategory = ({ id }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
+  const [page, setpage] = useState(1);
+  const [products, setproducts] = useState([]);
+  const [idNow, setidNow] = useState(id);
+  const categoriesSubProducts = useSelector(
+    (state) => state.ProductCategoryReducer.categoriesSubProducts
+  );
   const loadingSubSubCategory = useSelector(
     (state) => state.ProductCategoryReducer.loadingSubSubCategory
   );
@@ -25,18 +27,25 @@ const SubSubCategory = ({id}) => {
   const subSubParent = useSelector(
     (state) => state.ProductCategoryReducer.subSubParent
   );
-  const categoriesFilterProduct = useSelector(
-    (state) => state.ProductCategoryReducer.categoriesFilterProduct
-  );
 
   useEffect(() => {
     dispatch(getMainSubSubCategory(id));
   }, [id]);
+  useEffect(() => {
+    if (categoriesSubProducts?.data && id === idNow) {
+      // console.log('object :>> ');
+      let margedProducts = [...products, ...categoriesSubProducts.data];
+      setproducts(margedProducts);
+    } else if (categoriesSubProducts?.data) {
+      let margedProducts = [...categoriesSubProducts.data];
+      setproducts(margedProducts);
+      setidNow(id);
+    }
+    // dispatch(getCategoriesProducts(id,page));
+  }, [categoriesSubProducts]);
 
-  const categoriesSubProducts = useSelector(
-    (state) => state.ProductCategoryReducer.categoriesSubProducts
-  );
-
+  console.log('products :>> ', products);
+  // console.log('categoriesSubProducts :>> ', categoriesSubProducts);
   useEffect(() => {
     dispatch(getSubCategoriesProducts(id));
   }, [id]);
@@ -44,6 +53,12 @@ const SubSubCategory = ({id}) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  let fetchMoreData = () => {
+    setpage(page + 1);
+    dispatch(setPageA());
+    dispatch(getSubCategoriesProducts(id, page));
+  };
 
   return (
     <React.Fragment>
@@ -67,7 +82,7 @@ const SubSubCategory = ({id}) => {
                   subSubParent !== null &&
                   subSubParent !== ""
                     ? subSubParent.name
-                    : "Category Name"}
+                    : "Items"}
                 </h4>
               </div>
             </div>
@@ -90,27 +105,31 @@ const SubSubCategory = ({id}) => {
 
       <div className="product-section pt-5">
         <div className="container">
-          {typeof categoriesSubProducts !== "undefined" &&
-            categoriesSubProducts !== null &&
-            categoriesSubProducts.length > 0 && (
-              <>
-                {/* <div className="section-heading py-3">
-                  <h4 className="heading-title">
-                    <span className="heading-circle green"></span>
-                    {typeof subSubParent !== "undefined" &&
-                    subSubParent !== null &&
-                    subSubParent !== ""
-                      ? `${subSubParent.name} Related Product`
-                      : "Related Product"}
-                  </h4>
-                </div> */}
+         
                 <div className="row">
-                  {categoriesSubProducts.map((item, index) => (
-                    <ProductMiniCard product={item} key={index + 1} />
-                  ))}
+
+                  {products?.length && (
+                    <InfiniteScroll
+                      dataLength={products.length}
+                      next={fetchMoreData}
+                      // inverse={true}
+                      hasMore={
+                        products.length < categoriesSubProducts?.meta?.total
+                      }
+                      loader={<h4>Loading...</h4>}
+                      style={{ overflow: "hidden" }}
+                    >
+                      <div className="row">
+                        {products.length > 0 &&
+                          products.map((item, index) => (
+                            <ProductMiniCard product={item} key={index + 1} />
+                          ))}
+                      </div>
+                    </InfiniteScroll>
+                  )}
                 </div>
-              </>
-            )}
+         
+          
         </div>
       </div>
     </React.Fragment>

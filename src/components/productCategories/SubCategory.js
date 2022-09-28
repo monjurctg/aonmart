@@ -50,24 +50,17 @@ const SubCategory = ({ id }) => {
 
 
   let fetchMoreData = () => {
-    console.log('pagesss :>> ', page);
     setpage(page + 1);
     dispatch(setPageA());
-    // console.log('first', categoriesAllProducts)
-    // setTimeout(() => {
     dispatch(getCategoriesProducts(id, page));
-
-    // }, 2000);
-
-    //  console.log('hi')
   };
 
   const categoriesAllProducts = useSelector(
     (state) => state.ProductCategoryReducer.categoriesAllProducts
   );
 
-  console.log("categoriesAllProducts", categoriesAllProducts?.meta?.total);
-  console.log('products?.length :>> ', products?.length);
+  // console.log("categoriesAllProducts", categoriesAllProducts?.meta?.total);
+  // console.log('products?.length :>> ', products?.length);
   useEffect(() => {
     dispatch(getCategoriesProducts(id, page));
     // dispatch(setPageAndId(id));
@@ -75,7 +68,7 @@ const SubCategory = ({ id }) => {
 
   useEffect(() => {
     if (categoriesAllProducts.data && id === idNow) {
-      console.log('object :>> ');
+      // console.log('object :>> ');
       let margedProducts = [...products, ...categoriesAllProducts.data];
       setproducts(margedProducts);
     } else if (categoriesAllProducts.data) {
