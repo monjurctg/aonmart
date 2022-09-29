@@ -24,8 +24,8 @@ const SignIn = () => {
     dispatch(handleLoginInput(name, value));
   };
 
-  const onSubmit = (data) => {
-    dispatch(loginAction(loginInput));
+  const  onSubmit = async (data) => {
+    await dispatch(loginAction(loginInput));
   };
 
   useEffect(() => {

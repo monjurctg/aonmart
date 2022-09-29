@@ -1,32 +1,31 @@
-import Axios from 'axios';
+import Axios from "axios";
 import * as JwtDecode from "jwt-decode";
-import { toggleModal } from '../../../../_redux/_global_store/action/GlobalAction';
-import { showToast } from '../../../master/Helper/Notification';
+import { toggleModal } from "../../../../_redux/_global_store/action/GlobalAction";
+import { showToast } from "../../../master/Helper/Notification";
 import * as Types from "../Type/Types";
-import { getUserDataAction } from './../../../_redux/getUserData/Action/UserDataAction';
+import { getUserDataAction } from "./../../../_redux/getUserData/Action/UserDataAction";
 
- let baseURL = process.env.REACT_APP_API_URL;
+let baseURL = process.env.REACT_APP_API_URL;
 
 export const handleLoginInput = (name, value) => (dispatch) => {
   const formData = {
     name: name,
-    value: value
-  }
-  dispatch({ type: Types.LOGIN_INPUT_CHANGE, payload: formData })
-}
+    value: value,
+  };
+  dispatch({ type: Types.LOGIN_INPUT_CHANGE, payload: formData });
+};
 
 export const handleChangeRegisterInput = (name, value) => (dispatch) => {
   const formData = {
     name: name,
-    value: value
-  }
-  dispatch({ type: Types.REGISTER_INPUT_CHANGE, payload: formData })
-}
-
+    value: value,
+  };
+  dispatch({ type: Types.REGISTER_INPUT_CHANGE, payload: formData });
+};
 
 /**
- * 
- * @param {object} registerInput 
+ *
+ * @param {object} registerInput
  * @returns handleUserRegistration
  */
 export const handleUserRegistration = (registerInput) => (dispatch) => {
@@ -39,20 +38,21 @@ export const handleUserRegistration = (registerInput) => (dispatch) => {
 
   let axiosConfig = {
     headers: {
-      'Accept': "application/json"
-    }
+      Accept: "application/json",
+    },
   };
-  try { 
+  try {
     Axios.post(`${baseURL}/register`, registerInput, axiosConfig)
       .then((res) => {
         response.message = res.data.message;
         response.isLoading = false;
         showToast("success", response.message);
         dispatch({ type: Types.USER_REGISTRATION, payload: response });
+        
       })
       .catch((error) => {
         const responseLog = error.response;
-        console.log(`error>>>>>>`, error.response.data.errors.mobile)
+        // console.log(`error>>>>>>`, error.response.data.errors.mobile)
         let mobileErrorMessage = "This number is already in the system";
         response.isLoading = false;
         if (typeof responseLog !== "undefined") {
@@ -64,12 +64,13 @@ export const handleUserRegistration = (registerInput) => (dispatch) => {
             if (responseLog.data.errors.name !== undefined) {
               errorMessage = responseLog.data.errors.name[0];
             } else if (responseLog.data.errors.mobile !== undefined) {
-              if(responseLog.data.errors.mobile[0] === "The mobile has already been taken."){
+              if (
+                responseLog.data.errors.mobile[0] ===
+                "The mobile has already been taken."
+              ) {
                 errorMessage = mobileErrorMessage;
-
-              }else{
-                
-                errorMessage = responseLog.data.errors.mobile[0];  
+              } else {
+                errorMessage = responseLog.data.errors.mobile[0];
               }
             } else if (responseLog.data.errors.email !== undefined) {
               errorMessage = responseLog.data.errors.email[0];
@@ -93,10 +94,9 @@ export const handleUserRegistration = (registerInput) => (dispatch) => {
   dispatch({ type: Types.USER_REGISTRATION, payload: response });
 };
 
-
 /**
- * 
- * @param {object} loginData 
+ *
+ * @param {object} loginData
  * @returns loginAction
  */
 export const loginAction = (loginInput) => (dispatch) => {
@@ -107,56 +107,59 @@ export const loginAction = (loginInput) => (dispatch) => {
     isLogging: false,
     loginMessage: "",
     isLoading: true,
-  }
-  dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: response })
+  };
+  dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: response });
 
   let axiosConfig = {
     headers: {
-      'Accept': "application/json"
-    }
+      Accept: "application/json",
+    },
   };
 
   try {
     Axios.post(`/login`, loginInput, axiosConfig)
       .then((res) => {
         if (res.status) {
+          showToast("success", res.data.message);
+          // console.log("res.data :>> ", res.data.message);
           response.userData = res.data.data;
           response.tokenData = res.data.data.access_token;
           response.message = res.data.message;
           response.isLoading = false;
           response.isLogging = true;
           localStorage.setItem("loginData", JSON.stringify(response));
-          localStorage.setItem("access_token", JSON.stringify(response.tokenData));
+          localStorage.setItem(
+            "access_token",
+            JSON.stringify(response.tokenData)
+          );
           dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: response });
           dispatch(getUserDataAction());
           dispatch(toggleModal(false));
+          window.location.reload()
         }
       })
       .catch((error) => {
         let responseLog = error.response;
-        console.log(`responseLog`, responseLog)
-        if (typeof responseLog !== 'undefined') {
+        // console.log(`responseLog`, responseLog)
+        if (typeof responseLog !== "undefined") {
           const { request, ...errorObject } = responseLog;
-          showToast('error', responseLog.data.message);
+          showToast("error", responseLog.data.message);
           if (responseLog.data.error) {
-            showToast('error', responseLog.data.error);
+            showToast("error", responseLog.data.error);
           }
-          dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: responseLog })
+          dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: responseLog });
         }
-      })
+      });
   } catch (error) {
     response.isLoading = false;
-    showToast('error', 'Network Error, Please Fix this !');
+    showToast("error", "Network Error, Please Fix this !");
   }
-
-}
-
-
+};
 
 export const emptyDispatch = () => (dispatch) => {
   const isLogging = false;
   // dispatch({ type: Types.EMPTY_DISPATCH, payload: isLogging });
-}
+};
 
 export const getAuthData = () => async (dispatch) => {
   let data = getLoginData();
@@ -182,21 +185,21 @@ export const logoutUserData = () => (dispatch) => {
   // dispatch({ type: Types.AUTH_POST_LOGOUT, payload: true });
 };
 
-
-
 /**
  * Logout a User
- * 
+ *
  * @return void
  */
 export const handleLogoutUser = () => (dispatch) => {
-  localStorage.removeItem('loginData');
-  localStorage.removeItem('access_token');
+  localStorage.removeItem("loginData");
+  localStorage.removeItem("access_token");
   // localStorage.removeItem('searchInfo');
-
+  showToast("success", "Logout Successfully !");
   dispatch(getUserDataAction());
   dispatch({ type: Types.LOGOUT_USER, payload: true });
-}
+  window.location.reload()
+
+};
 
 /**
  * checkTokenExpired
@@ -244,4 +247,3 @@ function getLoginData() {
   }
   return loginData;
 }
-
