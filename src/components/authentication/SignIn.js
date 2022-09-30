@@ -1,31 +1,55 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { toggleModal } from "../../_redux/_global_store/action/GlobalAction";
+import React, {useEffect, useState} from "react";
+import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory, useLocation} from "react-router-dom";
+import {toggleModal} from "../../_redux/_global_store/action/GlobalAction";
 import Message from "./../master/message/Message";
 import SmallLoading from "./../master/simpleLoading/SmallLoading";
-import { handleLoginInput, loginAction } from "./_redux/Action/AuthAction";
+import {handleLoginInput, loginAction} from "./_redux/Action/AuthAction";
 
 const SignIn = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  let { from } = location.state || { from: { pathname: "/" } };
+  const [inputData, setInputData] = useState({
+    mobile: "",
+    password: "",
+  });
+  console.log(inputData);
+  let {from} = location.state || {from: {pathname: "/"}};
 
-  const { register, errors, handleSubmit } = useForm();
+  // const {register, errors, handleSubmit} = useForm();
+  // console.log(errors, "err");
+
   const [showPass, setShowPass] = useState(false);
+  const [errors, setErrors] = useState("");
 
   const loginInput = useSelector((state) => state.AuthReducer.loginInput);
   const isLoading = useSelector((state) => state.AuthReducer.isLoading);
   const userData = useSelector((state) => state.UserDataReducer.userData);
 
-  const handleLoginInputChange = (name, value) => {
-    dispatch(handleLoginInput(name, value));
+  const handleLoginInputChange = (e) => {
+    setInputData({
+      ...inputData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const  onSubmit = async (data) => {
-    await dispatch(loginAction(loginInput));
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("object");
+    const {mobile, password} = inputData;
+    console.log("object", mobile, password);
+    if (!mobile) {
+      setErrors("mobail or password can't be empty");
+    } else if (!password) {
+      setErrors("mobail or password can't be empty");
+    }
+    if (mobile && password) {
+      console.log("first");
+      dispatch(loginAction(inputData));
+    }
   };
 
   useEffect(() => {
@@ -49,7 +73,7 @@ const SignIn = () => {
 
   return (
     <>
-      <div className="login-area" style={{position:"relative"}}>
+      <div className="login-area" style={{position: "relative"}}>
         <div className="login-body">
           <div className="login-header">
             <h4>Sign In</h4>
@@ -58,39 +82,32 @@ const SignIn = () => {
           <div className="login-content">
             <form
               className="login-form"
-              autoComplete="off"
-              autoSave="off"
-              onSubmit={handleSubmit(onSubmit)}
-            >
+              // autoComplete="off"
+              // autoSave="off"
+              onSubmit={onSubmit}>
               <input
                 type="text"
                 name="mobile"
                 placeholder="Mobile"
-                ref={register({ required: true })}
-                value={loginInput.mobile}
-                onChange={(e) =>
-                  handleLoginInputChange("mobile", e.target.value)
-                }
+                // ref={register({ required: true })}
+                value={inputData.mobile}
+                onChange={handleLoginInputChange}
               />
-              {errors.mobile && errors.mobile?.type === "required" && (
+              {/* {errors.mobile && errors.mobile?.type === "required" && (
                 <Message text="Mobile number is required !" />
-              )}
+              )} */}
 
               <div className="password_input_group">
                 <input
                   type={showPass === false ? "password" : "text"}
                   name="password"
                   placeholder="Password"
-                  ref={register({ required: true })}
-                  value={loginInput.password}
-                  onChange={(e) =>
-                    handleLoginInputChange("password", e.target.value)
-                  }
+                  value={inputData.password}
+                  onChange={handleLoginInputChange}
                 />
                 <span
                   className="password_hide_show pointer"
-                  onClick={() => setShowPass(!showPass)}
-                >
+                  onClick={() => setShowPass(!showPass)}>
                   {showPass === false ? (
                     <i className="far fa-eye"></i>
                   ) : (
@@ -98,9 +115,7 @@ const SignIn = () => {
                   )}
                 </span>
               </div>
-              {errors.password && errors.password.type === "required" && (
-                <Message text="Password number is required !" />
-              )}
+              {errors !== "" && <Message text={errors} />}
 
               {!isLoading && (
                 <div>
@@ -114,8 +129,7 @@ const SignIn = () => {
                   <button
                     type="submit"
                     className="submit d-flex justify-content-center"
-                    disabled={true}
-                  >
+                    disabled={true}>
                     <span>
                       <SmallLoading color="#fff" type="spokes" />
                     </span>
@@ -133,7 +147,7 @@ const SignIn = () => {
                         </div> */}
             <div className="text-center dont-account py-4">
               <p className="mb-0">
-                Don't have any account ? {" "}
+                Don't have any account ?{" "}
                 <span className="pointer" onClick={() => redirectToRegister()}>
                   Sign Up
                 </span>
@@ -145,9 +159,9 @@ const SignIn = () => {
 
         <div className="forgot-password text-center">
           <p>
-            Forgot Passowrd ? {" "}
+            Forgot Passowrd ?{" "}
             <span className="pointer" onClick={() => redirectToPasswordReset()}>
-              Reset 
+              Reset
             </span>
           </p>
         </div>

@@ -1,6 +1,6 @@
 /** @format */
 
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router";
 import {Dropdown, Nav, Sidenav} from "rsuite";
@@ -14,6 +14,7 @@ const SidebarMenu = ({isMenuOpen, setIsMenuOpen}) => {
   const categoryList = useSelector(
     (state) => state.ProductSidebarReducer.categoryList
   );
+
   // console.log(`categoryList>>>`, categoryList)
 
   let shorted_category;
@@ -80,7 +81,7 @@ const SidebarMenu = ({isMenuOpen, setIsMenuOpen}) => {
                           key={index + 1}
                           onClick={() => handleRedirectToSubCategory(menu)}>
                           {menu.sub_categories.map((menu2, index2) =>
-                            menu2.sub_sub_categories.length > 0  ? (
+                            menu2.sub_sub_categories.length > 0 ? (
                               <Dropdown.Menu
                                 eventKey={menu2.id}
                                 title={menu2.name}

@@ -1,34 +1,86 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {useMemo} from "react";
+import {useForm} from "react-hook-form";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import SmallLoading from "../master/simpleLoading/SmallLoading";
 import Message from "./../master/message/Message";
 import {
   handleChangeRegisterInput,
-  handleUserRegistration
+  handleUserRegistration,
 } from "./_redux/Action/AuthAction";
 
 const Registration = () => {
   const dispatch = useDispatch();
   const {
     register,
-    formState: { errors },
+    formState: {errors},
     handleSubmit,
     watch,
   } = useForm();
+  const history = useHistory();
+  const [inputData, setInputData] = useState({
+    name: "",
+    mobile: "",
+    password: "",
+    email: "",
+    password_confirmation: "",
+  });
+
+  const [error, setError] = useState({
+    name: "",
+    mobile: "",
+    password: "",
+    password_confirmation: "",
+  });
   const [showPass, setShowPass] = useState(false);
   const [confirmPassShow, setConfirmPassShow] = useState(false);
+  const isRegSuccess = useSelector((state) => state.AuthReducer.isRegSuccess);
 
   const registerInput = useSelector((state) => state.AuthReducer.registerInput);
   const isRegistering = useSelector((state) => state.AuthReducer.isRegistering);
 
-  const onSubmit = async (data) => {
-    await dispatch(handleUserRegistration(registerInput));
+  const handleLoginInputChange = (e) => {
+    setInputData({
+      ...inputData,
+      [e.target.name]: e.target.value,
+    });
+    setError({
+      name: "",
+      mobile: "",
+      password: "",
+      password_confirmation: "",
+    });
+  };
+  console.log(isRegSuccess, "isREg");
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    console.log("object");
+    const {mobile, name, password, password_confirmation} = inputData;
+    if (!name) setError({...error, name: "Name is Required"});
+    else if (!mobile) setError({...error, mobile: "mobile is Required"});
+    else if (!password) setError({...error, password: "password is Required"});
+    else if (password !== password_confirmation)
+      setError({...error, password_confirmation: "password not match"});
+    if (mobile && name && password) {
+      console.log("input data", inputData);
+      dispatch(handleUserRegistration(inputData));
+    }
   };
 
-  const handleLoginInputChange = (name, value) => {
-    dispatch(handleChangeRegisterInput(name, value));
-  };
+  useMemo(() => {
+    if (isRegSuccess) {
+      setInputData({
+        name: "",
+        mobile: "",
+        password: "",
+        password_confirmation: "",
+      });
+      history.push("/login");
+    }
+  }, [isRegSuccess]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,16 +90,22 @@ const Registration = () => {
     <section className="login-section section-ptb py-5">
       <div className="container">
         <div className="row align-items-center">
-          <h3 style={{paddingLeft:"35px",margin:"auto",width:"10rem"
-    ,paddingBottom: "1rem"}}>Sign up</h3>
+          <h3
+            style={{
+              paddingLeft: "35px",
+              margin: "auto",
+              width: "10rem",
+              paddingBottom: "1rem",
+            }}>
+            Sign up
+          </h3>
           <div className="col-lg-12">
             <div className="eflux-login-form-area">
               <form
                 className="eflux-login-form"
                 autoComplete="off"
                 autoSave="off"
-                onSubmit={handleSubmit(onSubmit)}
-              >
+                onSubmit={onSubmit}>
                 <div className="row d-flex flex-column align-items-center">
                   <div className="col-lg-6">
                     <div className="input-item">
@@ -56,15 +114,11 @@ const Registration = () => {
                         type="text"
                         name="name"
                         placeholder="Name"
-                        ref={register({ required: true })}
-                        value={registerInput.name}
-                        onChange={(e) =>
-                          handleLoginInputChange("name", e.target.value)
-                        }
+                        // ref={register({required: true})}
+                        value={inputData.name}
+                        onChange={handleLoginInputChange}
                       />
-                      {errors.name?.type === "required" && (
-                        <Message text="Full name is required !" />
-                      )}
+                      {error.name && <Message text={error.name} />}
                     </div>
                   </div>
 
@@ -75,15 +129,11 @@ const Registration = () => {
                         type="number"
                         name="mobile"
                         placeholder="Phone"
-                        ref={register({ required: true })}
-                        value={registerInput.mobile}
-                        onChange={(e) =>
-                          handleLoginInputChange("mobile", e.target.value)
-                        }
+                        ref={register({required: true})}
+                        value={inputData.mobile}
+                        onChange={handleLoginInputChange}
                       />
-                      {errors.mobile?.type === "required" && (
-                        <Message text="Phone number is required !" />
-                      )}
+                      {error.mobile && <Message text={error.mobile} />}
                     </div>
                   </div>
 
@@ -94,15 +144,9 @@ const Registration = () => {
                         type="email"
                         name="email"
                         placeholder="Email(optional)"
-                        ref={register({ required: false })}
-                        value={registerInput.email}
-                        onChange={(e) =>
-                          handleLoginInputChange("email", e.target.value)
-                        }
+                        value={inputData.email}
+                        onChange={handleLoginInputChange}
                       />
-                      {errors.email?.type === "required" && (
-                        <Message text="Email is required !" />
-                      )}
                     </div>
                   </div>
 
@@ -114,23 +158,12 @@ const Registration = () => {
                           type={showPass === false ? "password" : "text"}
                           name="password"
                           placeholder="Password"
-                          value={registerInput.password}
-                          ref={register({
-                            required: "You must enter a password",
-                            minLength: {
-                              value: 8,
-                              message:
-                                "Password must be 8 characters",
-                            },
-                          })}
-                          onChange={(e) =>
-                            handleLoginInputChange("password", e.target.value)
-                          }
+                          value={inputData.password}
+                          onChange={handleLoginInputChange}
                         />
                         <span
                           className="password_hide_show pointer t-12%"
-                          onClick={() => setShowPass(!showPass)}
-                        >
+                          onClick={() => setShowPass(!showPass)}>
                           {showPass === false ? (
                             <i className="far fa-eye"></i>
                           ) : (
@@ -138,9 +171,7 @@ const Registration = () => {
                           )}
                         </span>
                       </div>
-                      {errors.password && (
-                        <Message text={errors.password.message} />
-                      )}
+                      {error.password && <Message text={error.password} />}
                     </div>
                   </div>
 
@@ -152,23 +183,12 @@ const Registration = () => {
                           type={confirmPassShow === false ? "password" : "text"}
                           name="password_confirmation"
                           placeholder="Confirm Password"
-                          value={registerInput.password_confirmation}
-                          ref={register({
-                            validate: (value) =>
-                              value === registerInput.password ||
-                              "Passwords do not match !",
-                          })}
-                          onChange={(e) =>
-                            handleLoginInputChange(
-                              "password_confirmation",
-                              e.target.value
-                            )
-                          }
+                          value={inputData.password_confirmation}
+                          onChange={handleLoginInputChange}
                         />
                         <span
                           className="password_hide_show pointer"
-                          onClick={() => setConfirmPassShow(!confirmPassShow)}
-                        >
+                          onClick={() => setConfirmPassShow(!confirmPassShow)}>
                           {confirmPassShow === false ? (
                             <i className="far fa-eye"></i>
                           ) : (
@@ -191,15 +211,14 @@ const Registration = () => {
                   </div>
                 )}
                 {isRegistering && (
-                  <div className="text-center" style={{width: "10rem",
-                    margin: "auto"}}>
+                  <div
+                    className="text-center"
+                    style={{width: "10rem", margin: "auto"}}>
                     <button
                       type="submit"
                       className="submit d-flex"
-                      disabled={true}
-                    >
+                      disabled={true}>
                       <span>
-                        
                         <SmallLoading color="#fff" type="spokes" />
                       </span>
                       <span className="ml-2">Creating...</span>

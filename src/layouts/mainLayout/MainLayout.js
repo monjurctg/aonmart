@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import ScrollToTop from "react-scroll-to-top";
 import FloatingCart from "../../components/cart/FloatingCart";
 import FloatingCartButton from "../../components/cart/FloatingCartButton";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SidebarMenu from "../../components/productSidebar/SidebarMenu";
+
 import "./MainLayout.css";
 
-const MainLayout = ({ children, title, description }) => {
+const MainLayout = ({children, title, description}) => {
   const [screenWidth, setScreenWidth] = useState(window.screen.width);
   console.log(screenWidth, "screenWidth");
   let condition = screenWidth < 1102 ? false : true;
@@ -39,8 +40,7 @@ const MainLayout = ({ children, title, description }) => {
       <Header isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <div className={`page-layout ${isMenuOpen ? "open-side-menu" : ""}`}>
         <div
-          className={isMenuOpen === true ? "toggledMenu" : "isNotToggledMenu"}
-        >
+          className={isMenuOpen === true ? "toggledMenu" : "isNotToggledMenu"}>
           {/* <ProductSidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} /> */}
           <SidebarMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         </div>
@@ -49,8 +49,7 @@ const MainLayout = ({ children, title, description }) => {
             isMenuOpen === true
               ? "toggledBody section-ptb"
               : "isNotToggledBody section-ptb"
-          }
-        >
+          }>
           {children}
         </div>
         <Footer />

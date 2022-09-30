@@ -1,9 +1,9 @@
 import Axios from "axios";
 import * as JwtDecode from "jwt-decode";
-import { toggleModal } from "../../../../_redux/_global_store/action/GlobalAction";
-import { showToast } from "../../../master/Helper/Notification";
+import {toggleModal} from "../../../../_redux/_global_store/action/GlobalAction";
+import {showToast} from "../../../master/Helper/Notification";
 import * as Types from "../Type/Types";
-import { getUserDataAction } from "./../../../_redux/getUserData/Action/UserDataAction";
+import {getUserDataAction} from "./../../../_redux/getUserData/Action/UserDataAction";
 
 let baseURL = process.env.REACT_APP_API_URL;
 
@@ -12,7 +12,7 @@ export const handleLoginInput = (name, value) => (dispatch) => {
     name: name,
     value: value,
   };
-  dispatch({ type: Types.LOGIN_INPUT_CHANGE, payload: formData });
+  dispatch({type: Types.LOGIN_INPUT_CHANGE, payload: formData});
 };
 
 export const handleChangeRegisterInput = (name, value) => (dispatch) => {
@@ -20,7 +20,7 @@ export const handleChangeRegisterInput = (name, value) => (dispatch) => {
     name: name,
     value: value,
   };
-  dispatch({ type: Types.REGISTER_INPUT_CHANGE, payload: formData });
+  dispatch({type: Types.REGISTER_INPUT_CHANGE, payload: formData});
 };
 
 /**
@@ -34,7 +34,7 @@ export const handleUserRegistration = (registerInput) => (dispatch) => {
     status: false,
     isLoading: true,
   };
-  dispatch({ type: Types.USER_REGISTRATION, payload: response });
+  dispatch({type: Types.USER_REGISTRATION, payload: response});
 
   let axiosConfig = {
     headers: {
@@ -47,8 +47,8 @@ export const handleUserRegistration = (registerInput) => (dispatch) => {
         response.message = res.data.message;
         response.isLoading = false;
         showToast("success", response.message);
-        dispatch({ type: Types.USER_REGISTRATION, payload: response });
-        
+        dispatch({type: Types.USER_REGISTRATION, payload: response});
+        dispatch({type: Types.REG_SUCCESS, payload: true});
       })
       .catch((error) => {
         const responseLog = error.response;
@@ -56,8 +56,8 @@ export const handleUserRegistration = (registerInput) => (dispatch) => {
         let mobileErrorMessage = "This number is already in the system";
         response.isLoading = false;
         if (typeof responseLog !== "undefined") {
-          const { request, ...errorObject } = responseLog;
-          dispatch({ type: Types.USER_REGISTRATION, payload: responseLog });
+          const {request, ...errorObject} = responseLog;
+          dispatch({type: Types.USER_REGISTRATION, payload: responseLog});
 
           if (responseLog.data.errors) {
             let errorMessage;
@@ -91,7 +91,7 @@ export const handleUserRegistration = (registerInput) => (dispatch) => {
     response.isLoading = false;
     showToast("error", "Network Error, Please Fix this !");
   }
-  dispatch({ type: Types.USER_REGISTRATION, payload: response });
+  dispatch({type: Types.USER_REGISTRATION, payload: response});
 };
 
 /**
@@ -108,7 +108,7 @@ export const loginAction = (loginInput) => (dispatch) => {
     loginMessage: "",
     isLoading: true,
   };
-  dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: response });
+  dispatch({type: Types.AUTH_LOGIN_CHECK, payload: response});
 
   let axiosConfig = {
     headers: {
@@ -132,22 +132,22 @@ export const loginAction = (loginInput) => (dispatch) => {
             "access_token",
             JSON.stringify(response.tokenData)
           );
-          dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: response });
+          dispatch({type: Types.AUTH_LOGIN_CHECK, payload: response});
           dispatch(getUserDataAction());
           dispatch(toggleModal(false));
-          window.location.reload()
+          // window.location.reload();
         }
       })
       .catch((error) => {
         let responseLog = error.response;
         // console.log(`responseLog`, responseLog)
         if (typeof responseLog !== "undefined") {
-          const { request, ...errorObject } = responseLog;
+          const {request, ...errorObject} = responseLog;
           showToast("error", responseLog.data.message);
           if (responseLog.data.error) {
             showToast("error", responseLog.data.error);
           }
-          dispatch({ type: Types.AUTH_LOGIN_CHECK, payload: responseLog });
+          dispatch({type: Types.AUTH_LOGIN_CHECK, payload: responseLog});
         }
       });
   } catch (error) {
@@ -196,9 +196,8 @@ export const handleLogoutUser = () => (dispatch) => {
   // localStorage.removeItem('searchInfo');
   showToast("success", "Logout Successfully !");
   dispatch(getUserDataAction());
-  dispatch({ type: Types.LOGOUT_USER, payload: true });
-  window.location.reload()
-
+  dispatch({type: Types.LOGOUT_USER, payload: true});
+  // window.location.reload();
 };
 
 /**

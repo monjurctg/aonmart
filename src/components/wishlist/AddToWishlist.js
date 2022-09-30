@@ -1,17 +1,17 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import * as Types from "./_redux/type/Types";
 
-import { useDispatch, useSelector } from "react-redux";
-import { toggleModal } from "../../_redux/_global_store/action/GlobalAction";
-import { showToast } from "../master/Helper/Notification";
-import { getOwnProductList } from "../ourProducts/_redux/Action/OurProductAction";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleModal} from "../../_redux/_global_store/action/GlobalAction";
+import {showToast} from "../master/Helper/Notification";
+import {getOwnProductList} from "../ourProducts/_redux/Action/OurProductAction";
 import SmallLoading from "./../master/simpleLoading/SmallLoading";
-import { getUserDataAction } from "./../_redux/getUserData/Action/UserDataAction";
+import {getUserDataAction} from "./../_redux/getUserData/Action/UserDataAction";
 import {
   addToWishlistAction,
   isRemoveAction,
-  removeFromTempWish
+  removeFromTempWish,
 } from "./_redux/action/WishlistAction";
 /**
  * @param {id} need product id for added product in wishlist

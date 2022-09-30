@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { Dropdown, Icon, Nav, Sidenav } from "rsuite";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {Link} from "react-router-dom";
+import {Dropdown, Icon, Nav, Sidenav} from "rsuite";
 import "./SidebarMenu.css";
-import { getProductCategory } from "./_redux/Action/ProductSidebarAction";
+import {getProductCategory} from "./_redux/Action/ProductSidebarAction";
 
-const SidebarMenu = ({ isMenuOpen, setIsMenuOpen }) => {
+const SidebarMenu = ({isMenuOpen, setIsMenuOpen}) => {
   const dispatch = useDispatch();
   const categoryList = useSelector(
     (state) => state.ProductSidebarReducer.categoryList
@@ -15,13 +15,11 @@ const SidebarMenu = ({ isMenuOpen, setIsMenuOpen }) => {
     dispatch(getProductCategory());
   }, []);
 
-
   return (
     <>
       <div
-        style={{ width: 250 }}
-        className="product_sidebar_menu catagory-sidebar-area fixed-totop"
-      >
+        style={{width: 250}}
+        className="product_sidebar_menu catagory-sidebar-area fixed-totop">
         <div className="catagory-sidebar-area-inner">
           <Sidenav defaultOpenKeys={["3", "4"]} activeKey="1">
             <Sidenav.Body className="bg-white">
@@ -41,23 +39,20 @@ const SidebarMenu = ({ isMenuOpen, setIsMenuOpen }) => {
                               className="product_sidebar_icon"
                             />
                           }
-                          key={index + 1}
-                        >
+                          key={index + 1}>
                           {menu.subcategories.map((menu2, index2) =>
                             menu2.sub_subcategories.length > 0 ? (
                               <Dropdown.Menu
                                 eventKey={menu2.id}
                                 title={menu2.subcategory_name}
-                                key={index2 + 1}
-                              >
+                                key={index2 + 1}>
                                 {/* <Link to={`/sub-category/${menu}`}>
                                                                         </Link> */}
                                 {menu2.sub_subcategories.map(
                                   (menu3, index3) => (
                                     <Dropdown.Item
                                       eventKey={menu3.id}
-                                      key={index3 + 1}
-                                    >
+                                      key={index3 + 1}>
                                       {menu3.sub_subcategory_name}
                                     </Dropdown.Item>
                                   )
@@ -79,8 +74,7 @@ const SidebarMenu = ({ isMenuOpen, setIsMenuOpen }) => {
                               alt={menu.category_name}
                               className="product_sidebar_icon"
                             />
-                          }
-                        >
+                          }>
                           {menu.category_name}
                         </Nav.Item>
                       )}
