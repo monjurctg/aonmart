@@ -13,11 +13,6 @@ const AddressAdd = ({ handleClose }) => {
 
     const { register, errors, handleSubmit, setValue } = useForm();
     const newAddressInput = useSelector((state) => state.UserReducer.newAddressInput);
-    const divisionList = useSelector((state) => state.LocationReducer.divisionList);
-    const districtList = useSelector((state) => state.LocationReducer.districtList);
-    const upzilaList = useSelector((state) => state.LocationReducer.upzilaList);
-    const loadingDistrict = useSelector((state) => state.LocationReducer.loadingDistrict);
-    const loadingUpzila = useSelector((state) => state.LocationReducer.loadingUpzila);
     const addingNewAddress = useSelector((state) => state.UserReducer.addingNewAddress);
 
     const handleLoginInputChange = (name, value) => {
@@ -34,8 +29,8 @@ const AddressAdd = ({ handleClose }) => {
     }, [])
 
     const isDefault = [
-        { label: "True", value: 'true' },
-        { label: "False", value: 'false' },
+        { label: "Yes", value: 'true' },
+        { label: "No", value: 'false' },
     ]
 
 
@@ -164,10 +159,10 @@ const AddressAdd = ({ handleClose }) => {
 
                     <div className="col-md-12">
                         <div className="input-item">
-                            <label>Is Default? </label>
+                            <label>Is this your default address? </label>
                             <RHFInput
                                 as={<Select options={isDefault} />}
-                                placeholder="Select Default Value"
+                                placeholder="Select Default Address"
                                 rules={{ required: true }}
                                 name="is_default"
                                 className="address_Input"

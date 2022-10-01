@@ -101,8 +101,8 @@ const ProductDetails = ({ product, id, screenWidthValue }) => {
                   <>
                     <img src={prevImg} alt="" style={{
                           width: "100%",
-                          height: "200px",
-                          objectFit: "cover",
+                          height: "260px",
+                          objectFit: "fill",
                     }}/>
                     {/* <SideBySideMagnifier
                       style={{width: "20px"}}

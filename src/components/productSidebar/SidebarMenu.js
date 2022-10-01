@@ -1,12 +1,12 @@
 /** @format */
 
-import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router";
-import {Dropdown, Nav, Sidenav} from "rsuite";
-import {getLocalSearchInfo} from "../Location&Store/_redux/action/Location&StoreAction";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import { Dropdown, Nav, Sidenav } from "rsuite";
+import { getLocalSearchInfo } from "../Location&Store/_redux/action/Location&StoreAction";
 import "./SidebarMenu.css";
-import {getProductCategory} from "./_redux/Action/ProductSidebarAction";
+import { getProductCategory } from "./_redux/Action/ProductSidebarAction";
 
 const SidebarMenu = ({isMenuOpen, setIsMenuOpen}) => {
   const history = useHistory();
