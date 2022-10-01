@@ -49,7 +49,7 @@ const AddressBook = ({ address_title = null }) => {
   const deleteAddress = (address) => {
     confirmAlert({
       title: "Confirm to delete",
-      message: `Are you sure to delete ${address.address}, ${address.district}, ${address.division}, Bangladesh`,
+      message: `Are you sure to delete ${address.address} Bangladesh`,
       buttons: [
         {
           label: "Yes",

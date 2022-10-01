@@ -66,10 +66,10 @@ const LandingBannerTop = () => {
         <div className="container-fluid">
           <div className="row landing_top_inner_banner">
             <div className="col-lg-6 landing_top_inner_banner_img">
-              <img src={state.sub_banner_one} alt="Landing top banner" />
+              <img src={state.sub_banner_one} alt="Landing top banner" style={{objectFit:"fill"}} />
             </div>
             <div className="col-lg-6 landing_top_inner_banner_img">
-              <img src={state.sub_banner_two} alt="Landing top banner" />
+              <img src={state.sub_banner_two} alt="Landing top banner"  style={{objectFit:"fill"}} />
             </div>
           </div>
         </div>

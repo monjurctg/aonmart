@@ -63,7 +63,7 @@ const OurPartners = () => {
       <section className="our_partner_section py-md-5 py-3">
         <div className="our_partner_inner_text">
           {/* <i className="fas fa-briefcase"></i> */}
-          <svg
+          {/* <svg
             width="80px"
             height="80px"
             version="1.1"
@@ -80,9 +80,9 @@ const OurPartners = () => {
                 data-reactid=".15328ax348s.6.2.0.0.9.0.0.0.0.0.1"
               ></path>
             </g>
-          </svg>
-          <h3 className="our_partner_inner_title"> Do you own a business? </h3>
-          <h4 className="our_partner_sub_title">Become a Corporate Customer</h4>
+          </svg> */}
+          <h3 className="our_partner_inner_title"> Do you own videos? </h3>
+          {/* <h4 className="our_partner_sub_title">Become a Corporate Customer</h4> */}
         </div>
 
         <div>

@@ -1,6 +1,7 @@
 // new
 import { default as axios, default as Axios } from "axios";
 import React, { useEffect, useState } from "react";
+import { Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CartItem from "../cart/CartItem";
@@ -20,8 +21,9 @@ const Checkout = () => {
   const history = useHistory();
   const { carts, totalPrice } = useSelector((state) => state.CartReducer);
   const addressList = useSelector((state) => state.UserReducer.addressList);
-  console.log("addressList", addressList);
+  // console.log("addressList", addressList);
   const [methodsPayment, setmethodsPayment] = useState();
+  // console.log('object :>> ', methodsPayment);
   const [requestedFrom, setrequestedFrom] = useState();
 
   const isPlacedLoading = useSelector(
@@ -32,10 +34,11 @@ const Checkout = () => {
   );
 
   const defaultAddress = addressList.find((item) => item.is_default === true);
-  console.log("defaultAddressafsdfdsfsdfsd", defaultAddress);
+  // console.log("defaultAddressafsdfdsfsdfsd", defaultAddress);
 
   const [defaultAddressID, setDefaultAddressID] = useState(0);
-  const [paymentMethod, setpaymentMethod] = useState(0);
+  const [paymentMethod, setpaymentMethod] = useState(2);
+  // console.log("paymentMethod", paymentMethod);
 
   // console.log('setrequestedFrom', requestedFrom)
 
@@ -107,13 +110,13 @@ const Checkout = () => {
   if (methodsPayment) {
     // console.log('methodsPayment', methodsPayment)
     methods = methodsPayment.map((methods, index) => (
-      <option key={index} value={methods.key}>
+      <option key={index} value={methods.key} selected={methods.key == 2}>
         {methods.title}
       </option>
     ));
   }
   const handlePlaceOrder = () => {
-    if (typeof LocalSearchInfo !== "undefined" && LocalSearchInfo !== null) {
+    if (typeof LocalSearchInfo !== "undefined" && LocalSearchInfo !== null && orderData.address_id !== 0) {
       //  dispatch(placeOrder(orderData));
       // new
 
@@ -127,7 +130,7 @@ const Checkout = () => {
       if (
         typeof access_token !== "undefined" &&
         access_token !== null &&
-        access_token !== ""
+        access_token !== "" 
       ) {
         const config = {
           headers: {
@@ -137,6 +140,7 @@ const Checkout = () => {
         };
 
         try {
+
           // console.log(orderData);
           Axios.post(`${baseURL}/orders`, orderData, config)
             .then((res) => {
@@ -156,10 +160,9 @@ const Checkout = () => {
               // console.log('error', responseLog)
               if (typeof responseLog !== "undefined") {
                 const { request, ...errorObject } = responseLog;
-                if(responseLog.status === 406){
-                  showToast("error", responseLog.data.message);
+                if (responseLog.status === 406) {
+                  showToast("error", "Please select a payment method");
 
-                  
                   // let errors = Object.values(responseLog?.data?.errors) || [];
                   // console.log('error', error)
                   // if (errors.length > 0) {
@@ -168,11 +171,10 @@ const Checkout = () => {
                   //     showToast("error", element[0]);
                   //   });
                   // }
-                }else if(responseLog.status === 500){
+                } else if (responseLog.status === 500) {
                   // console.log('firssadat', responseLog.data)
 
                   showToast("error", responseLog.data.message);
-
                 }
                 dispatch({ type: Types.PLACE_ORDER, payload: responseLog });
               }
@@ -182,8 +184,10 @@ const Checkout = () => {
           showToast("error", "Network Error, Please Fix this !");
         }
       } else {
-        showToast("error", "Please login first");
+        showToast("error", "Enter your address");
       }
+    }else{
+      showToast("error", "Enter your address");
     }
   };
 
@@ -283,51 +287,80 @@ const Checkout = () => {
               </div>
               {/** Checkout user info input section close*/}
               {/** Checkout user delivery info start*/}
-              <div className="form-item time-schedule bg-color-white box-shadow p-3 p-lg-5 border-radius5">
-                <h6>Delivery Schedule</h6>
 
-                {/* <div className="time-schedule-container">
-                  Usually within 24 hours. Will call to confirm.
-                </div> */}
-
-                <div className="time-schedule-container">
-                  {/* <p className="title">Express-Delivery</p> */}
-                  <div className="time-schedule-box">
-                    {totalPrice !== 0 ? (
-                      <div className="time-schedule-container">
-                        Usually within 24 hours. Will call to confirm.
-                      </div>
-                    ) : (
-                      history.push("/")
-                    )}
-                  </div>
-                </div>
-              </div>
-              {/** Checkout user delivery info close*/}
-              <div className="form-item payment-item bg-color-white box-shadow p-3 p-lg-5 border-radius5">
-                <h3 className="text-center">Payment</h3>
-                {/* <p style={{ color: "black" }}>Cash on delivery</p> */}
-                <select
-                  className="payment-select"
-                  onChange={(e) => {
-                    setpaymentMethod(e.target.value);
-                  }}
-                  name="payment_method"
-                >
-                  <option disabled selected>
-                    Payment methods
-                  </option>
-                  {methods}
-                </select>
-                <div className="text-right">
-                  <button
-                    className="place_order_btn"
-                    onClick={handlePlaceOrder}
+              <Card>
+                <Card.Header style={{ background: "white" }}>
+                  <h3
+                    className="title custom_user_addess_flex"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      marginTop: 0,
+                      display: "block",
+                      // padding: "25px 30px",
+                    }}
                   >
-                    Place Order
-                  </button>
-                </div>
-              </div>
+                    Delivery Schedule
+                  </h3>
+                </Card.Header>
+                <Card.Body>
+                  <Card.Text>
+                    <div className="time-schedule-container">
+                      {/* <p className="title">Express-Delivery</p> */}
+                      <div className="time-schedule-box">
+                        {totalPrice !== 0 ? (
+                          <div className="time-schedule-container">
+                            Usually within 24 hours. Will call to confirm.
+                          </div>
+                        ) : (
+                          history.push("/")
+                        )}
+                      </div>
+                    </div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+
+              {/** Checkout user delivery info close*/}
+
+              <Card style={{ margin: "14px 0px" }}>
+                <Card.Header style={{ background: "white" }}>
+                  <h3
+                    className="title custom_user_addess_flex"
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "700",
+                      marginTop: 0,
+                      display: "block",
+                      // padding: "25px 30px",
+                    }}
+                  >
+                    Payment
+                  </h3>
+                </Card.Header>
+                <Card.Body>
+                  <Card.Text>
+                    <select
+                      className="payment-select"
+                      onChange={(e) => {
+                        setpaymentMethod(e.target.value);
+                      }}
+                      name="payment_method"
+                    >
+                      <option disabled>Payment methods</option>
+                      {methods}
+                    </select>
+                    <div className="text-right my-3">
+                      <button
+                        className="place_order_btn"
+                        onClick={handlePlaceOrder}
+                      >
+                        Place Order
+                      </button>
+                    </div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
             </div>
             {/** Checkout page cart section */}
             <div className="col-xl-8 col-12">

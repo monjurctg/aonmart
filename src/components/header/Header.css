@@ -508,7 +508,7 @@ form.form-inline.top-search {
 
 form.form-inline.top-search input.form-control {
   width: 100%;
-  max-width: 72%;
+  max-width: 50%;
 }
 
 @media only screen and (max-width: 479px) {
@@ -627,6 +627,7 @@ a.category-item {
   min-height: 100px;
   padding: 10px;
   max-height: 300px;
+  min-width: 50%;
   z-index: 100;
   /* left: 100px; */
   border-radius: 5px;
@@ -685,8 +686,8 @@ a.category-item {
 
 @media screen and (max-width: 1570px) {
   .search-suggestion-area {
-    left: 30%;
+    left: 50%;
 
-    transform: translateX(-30%);
+    transform: translateX(-50%);
   }
 }

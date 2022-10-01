@@ -116,8 +116,8 @@ const Footer = () => {
           <div className="footer-bottom">
             <div className="row">
               <div className="col-lg-7 text-center text-lg-left mb-3 mb-md-0">
-                <p className="copyright" style={{fontSize:"19px"}}>
-                  Copyright &copy; 2021 <Link to="/">Aonmart</Link>. All Rights
+                <p className="copyright" style={{fontSize:"16px"}}>
+                  Copyright &copy; <Link to="/">Aonmart</Link>. All Rights
                   Reserved.
                 </p>
               </div>
@@ -125,7 +125,7 @@ const Footer = () => {
               <div className="col-lg-5 d-flex justify-content-center justify-content-lg-end">
                 <ul className="footer-menu d-flex flex-wrap">
                   <li>
-                    <a href="/">Privacy Policy</a>
+                    <a style={{color:"#464646",fontSize:"19px",fontWeight:"600"}} href="/">Privacy Policy</a>
                   </li>
                 </ul>
               </div>

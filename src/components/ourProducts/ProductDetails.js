@@ -110,8 +110,8 @@ const ProductDetails = ({product, id, screenWidthValue}) => {
                       alt=""
                       style={{
                         width: "100%",
-                        height: "200px",
-                        objectFit: "cover",
+                        height: "260px",
+                        objectFit: "fill",
                       }}
                     />
                     {/* <SideBySideMagnifier
