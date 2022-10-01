@@ -1,21 +1,23 @@
 /** @format */
 
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 import CartQuantityForDetails from "../cart/partials/CartQuantityForDetails";
 import {
   addToCartAction,
-  getCartsAction
+  getCartsAction,
 } from "../cart/_redux/action/CartAction";
+import {showToast} from "../master/Helper/Notification";
 import PriceCalculation from "../master/services/PriceCalculcation";
 import SimpleButton from "../master/simpleButton/SimpleButton";
 import SimpleLoading from "../master/simpleLoading/SimpleLoading";
-import { getProductDetails } from "./_redux/Action/OurProductAction";
+import {getProductDetails} from "./_redux/Action/OurProductAction";
 
-const ProductDetails = ({ product, id, screenWidthValue }) => {
+const ProductDetails = ({product, id, screenWidthValue}) => {
   // const { carts, cartQuantity } = useSelector((state) => state.CartReducer);
   // console.log('filterCartssssssss')
+  console.log(product, "product details");
 
   const storeInformation =
     JSON.parse(localStorage.getItem("storeInformation")) || "";
@@ -73,7 +75,11 @@ const ProductDetails = ({ product, id, screenWidthValue }) => {
   }, [loadingDetails, carts, quantity]);
 
   const addToCart = () => {
-    dispatch(addToCartAction(product));
+    if (product.stock < 0) {
+      showToast("error", "Product out of stock!");
+      return;
+    }
+    // dispatch(addToCartAction(product));
     // if (
     //   typeof carts !== "undefined" &&
     //   carts !== null &&
@@ -99,11 +105,15 @@ const ProductDetails = ({ product, id, screenWidthValue }) => {
               <div className="">
                 {prevImg !== null && (
                   <>
-                    <img src={prevImg} alt="" style={{
-                          width: "100%",
-                          height: "200px",
-                          objectFit: "cover",
-                    }}/>
+                    <img
+                      src={prevImg}
+                      alt=""
+                      style={{
+                        width: "100%",
+                        height: "200px",
+                        objectFit: "cover",
+                      }}
+                    />
                     {/* <SideBySideMagnifier
                       style={{width: "20px"}}
                       // imageSrc={prevImg}
@@ -135,20 +145,19 @@ const ProductDetails = ({ product, id, screenWidthValue }) => {
                 {/* <a href="/" className="cata">
                   Catagory
                 </a> */}
-                <h4 style={{ fontSize: "18px" }}>{productDetails.name}</h4>
+                <h4 style={{fontSize: "18px"}}>{productDetails.name}</h4>
 
                 {/* <p className="quantity">1kg</p> */}
                 <h3 className="price">
                   <PriceCalculation
                     item={productDetails}
-                    style={{ fontSize: "24px" }}
+                    style={{fontSize: "24px"}}
                   />
                 </h3>
 
                 <div
                   className="d-flex justify-content-between"
-                  style={{ alignItems: "baseline" }}
-                >
+                  style={{alignItems: "baseline"}}>
                   <div>
                     <CartQuantityForDetails
                       item={productDetails}
@@ -169,22 +178,20 @@ const ProductDetails = ({ product, id, screenWidthValue }) => {
                       padding: "10px",
                       background: "#3f51b5",
                       boxShadow: "1px 1px 1px 1px #9e9e9e",
-                    }}
-                  >
-                    Stock:<span>{productDetails.stock}</span>
+                    }}>
+                    Stock:
+                    <span>
+                      {productDetails.stock < 0 ? 0 : productDetails.stock}
+                    </span>
                   </h5>
                 </div>
                 <p>{productDetails.full_description}</p>
 
                 <div
                   className="d-flex justify-content-end"
-                  onClick={() => addToCart()}
-                >
+                  onClick={() => addToCart()}>
                   {/* <a href="/" class="buy-now">Buy Now</a> */}
-                  <SimpleButton
-                    text="Buy Now"
-                    style={{ padding: "5px 20px" }}
-                  />
+                  <SimpleButton text="Buy Now" style={{padding: "5px 20px"}} />
                 </div>
               </div>
             </div>

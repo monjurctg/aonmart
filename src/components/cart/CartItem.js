@@ -1,8 +1,8 @@
 import React from "react";
 import CartQuantity from "./partials/CartQuantity";
-import { deleteCartItemAction } from "./_redux/action/CartAction";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import {deleteCartItemAction} from "./_redux/action/CartAction";
+import {useDispatch} from "react-redux";
+import {Link} from "react-router-dom";
 
 /**
  *
@@ -19,14 +19,14 @@ const CartItem = ({
   isUpgrade = true,
 }) => {
   const dispatch = useDispatch();
+  console.log(item, "stoclk");
 
   return (
     <div className={`cart-product-item ${child_style}`}>
       {isRemovable && (
         <div
           className="close-item"
-          onClick={() => dispatch(deleteCartItemAction(item.product_id))}
-        >
+          onClick={() => dispatch(deleteCartItemAction(item.product_id))}>
           <i className="fas fa-times"></i>
         </div>
       )}
@@ -35,7 +35,7 @@ const CartItem = ({
           <div className="thumb cart_thumb text-center">
             <a href="/">
               <img
-                style={{ width: "60px", height: "60px" }}
+                style={{width: "60px", height: "60px"}}
                 src={item.product_image}
                 alt={item.product_name}
                 className="img-fluid img-thumbnail"
@@ -48,22 +48,26 @@ const CartItem = ({
             <Link to="/" className="product-title">
               {item.product_name}
             </Link>
-            <div style={{display:"flex", flexDirection:"row"}} >
-            <CartQuantity cart={item} isUpgrade={isUpgrade} />
-            <div >
-              {typeof item.offer_price !== "undefined" &&
-              item.offer_price !== null &&
-              item.offer_price !== "" ? (
-                <div className="product-price">
-                  <del>{item.price}</del>
-                  <span className="ml-4">{item.offer_price}</span>
-                </div>
-              ) : (
-                <div className="product-price">
-                  <span className="ml-4">{item.price} Tk.</span>
-                </div>
-              )}
-            </div>
+            <div style={{display: "flex", flexDirection: "row"}}>
+              <CartQuantity
+                cart={item}
+                stock={item?.productStock}
+                isUpgrade={isUpgrade}
+              />
+              <div>
+                {typeof item.offer_price !== "undefined" &&
+                item.offer_price !== null &&
+                item.offer_price !== "" ? (
+                  <div className="product-price">
+                    <del>{item.price}</del>
+                    <span className="ml-4">{item.offer_price}</span>
+                  </div>
+                ) : (
+                  <div className="product-price">
+                    <span className="ml-4">{item.price} Tk.</span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
