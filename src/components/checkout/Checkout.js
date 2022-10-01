@@ -21,9 +21,9 @@ const Checkout = () => {
   const history = useHistory();
   const { carts, totalPrice } = useSelector((state) => state.CartReducer);
   const addressList = useSelector((state) => state.UserReducer.addressList);
-  console.log("addressList", addressList);
+  // console.log("addressList", addressList);
   const [methodsPayment, setmethodsPayment] = useState();
-  console.log('object :>> ', methodsPayment);
+  // console.log('object :>> ', methodsPayment);
   const [requestedFrom, setrequestedFrom] = useState();
 
   const isPlacedLoading = useSelector(
@@ -37,7 +37,8 @@ const Checkout = () => {
   // console.log("defaultAddressafsdfdsfsdfsd", defaultAddress);
 
   const [defaultAddressID, setDefaultAddressID] = useState(0);
-  const [paymentMethod, setpaymentMethod] = useState(0);
+  const [paymentMethod, setpaymentMethod] = useState(2);
+  // console.log("paymentMethod", paymentMethod);
 
   // console.log('setrequestedFrom', requestedFrom)
 
@@ -115,7 +116,7 @@ const Checkout = () => {
     ));
   }
   const handlePlaceOrder = () => {
-    if (typeof LocalSearchInfo !== "undefined" && LocalSearchInfo !== null) {
+    if (typeof LocalSearchInfo !== "undefined" && LocalSearchInfo !== null && orderData.address_id !== 0) {
       //  dispatch(placeOrder(orderData));
       // new
 
@@ -129,7 +130,7 @@ const Checkout = () => {
       if (
         typeof access_token !== "undefined" &&
         access_token !== null &&
-        access_token !== ""
+        access_token !== "" 
       ) {
         const config = {
           headers: {
@@ -139,6 +140,7 @@ const Checkout = () => {
         };
 
         try {
+
           // console.log(orderData);
           Axios.post(`${baseURL}/orders`, orderData, config)
             .then((res) => {
@@ -159,7 +161,7 @@ const Checkout = () => {
               if (typeof responseLog !== "undefined") {
                 const { request, ...errorObject } = responseLog;
                 if (responseLog.status === 406) {
-                  showToast("error", responseLog.data.message);
+                  showToast("error", "Please select a payment method");
 
                   // let errors = Object.values(responseLog?.data?.errors) || [];
                   // console.log('error', error)
@@ -182,8 +184,10 @@ const Checkout = () => {
           showToast("error", "Network Error, Please Fix this !");
         }
       } else {
-        showToast("error", "Please login first");
+        showToast("error", "Enter your address");
       }
+    }else{
+      showToast("error", "Enter your address");
     }
   };
 
@@ -318,8 +322,8 @@ const Checkout = () => {
               </Card>
 
               {/** Checkout user delivery info close*/}
-           
-              <Card style={{margin:"14px 0px"}}>
+
+              <Card style={{ margin: "14px 0px" }}>
                 <Card.Header style={{ background: "white" }}>
                   <h3
                     className="title custom_user_addess_flex"
@@ -336,18 +340,24 @@ const Checkout = () => {
                 </Card.Header>
                 <Card.Body>
                   <Card.Text>
-                  <select
-                  className="payment-select"
-                  onChange={(e) => {
-                    setpaymentMethod(e.target.value);
-                  }}
-                  name="payment_method"
-                >
-                  <option disabled >
-                    Payment methods
-                  </option>
-                  {methods}
-                </select>
+                    <select
+                      className="payment-select"
+                      onChange={(e) => {
+                        setpaymentMethod(e.target.value);
+                      }}
+                      name="payment_method"
+                    >
+                      <option disabled>Payment methods</option>
+                      {methods}
+                    </select>
+                    <div className="text-right my-3">
+                      <button
+                        className="place_order_btn"
+                        onClick={handlePlaceOrder}
+                      >
+                        Place Order
+                      </button>
+                    </div>
                   </Card.Text>
                 </Card.Body>
               </Card>
