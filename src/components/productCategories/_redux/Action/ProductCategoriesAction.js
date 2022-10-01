@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { showToast } from "../../../master/Helper/Notification";
+import {showToast} from "../../../master/Helper/Notification";
 import * as Types from "../Type/Types";
 
 const access_token = JSON.parse(localStorage.getItem("access_token"));
@@ -342,7 +342,7 @@ export const getSubCategoriesProducts = (SubCategory_id) => (dispatch) => {
     // stores/{{store_id}}/products?category_id={{category_id}}
     // url = `/stores/${SearchInfo.store.value}/products?${category_id}`;
 
-    url = `/stores/${SearchInfo.store.value}/products?category_id=${category_id}&subcategory_id=${SubCategory_id}`;
+    url = `/stores/${SearchInfo.store.value}/products?category_id=&subcategory_id=${SubCategory_id}`;
   } else {
     showToast("error", "Please select an store first");
   }
