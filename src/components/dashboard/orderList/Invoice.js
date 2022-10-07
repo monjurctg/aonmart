@@ -7,7 +7,7 @@ import { getAllAdderss } from "../_redux/action/UserAction";
 
 const Invoice = ({ orderDetails }) => {
   const dispatch = useDispatch();
-
+console.log('orderDetails :>> ', orderDetails);
   function printDiv(divName) {
     var printContents = document.getElementById(divName).innerHTML;
     var originalContents = document.body.innerHTML;
@@ -42,7 +42,7 @@ const Invoice = ({ orderDetails }) => {
             <div className="receipt bg-white p-3 rounded">
               <img src={Logo} width="120" alt="Aonmart" />
               <h4 className="mt-3 mb-3">
-                Invoice for Order Number {orderDetails.order_no}.
+                Invoice for Order Number {orderDetails?.order_no}.
               </h4>
               <h6 className="name">
                 Hello{" "}
@@ -62,7 +62,7 @@ const Invoice = ({ orderDetails }) => {
                   <div>
                     <span className="d-block fs-12">Order date</span>
                     <span className="font-weight-bold">
-                      {orderDetails.processing_at}
+                      {orderDetails?.processing_at}
                     </span>
                   </div>
                 </div>
@@ -70,7 +70,7 @@ const Invoice = ({ orderDetails }) => {
                 <div>
                   <span className="d-block fs-12">Order number</span>
                   <span className="font-weight-bold">
-                    #{orderDetails.order_no}
+                    #{orderDetails?.order_no}
                   </span>
                 </div>
                 </div>
@@ -153,7 +153,7 @@ const Invoice = ({ orderDetails }) => {
               {/* </div>  */}
               <hr />
               <div className="border shadow-sm">
-                {orderDetails.details.length > 0 &&
+                {orderDetails?.details?.length > 0 &&
                   orderDetails.details.map((item, index) => (
                     <div className="d-flex justify-content-between align-items-center invoice_product mt-2">
                       <div className="d-flex flex-row product-name-image">
@@ -188,7 +188,7 @@ const Invoice = ({ orderDetails }) => {
                     <div className="d-flex justify-content-between">
                       <span>Subtotal</span>
                       <span className="font-weight-bold">
-                        {orderDetails.total} Tk.
+                        {orderDetails?.total} Tk.
                       </span>
                     </div>
 
@@ -201,7 +201,7 @@ const Invoice = ({ orderDetails }) => {
                     <div className="d-flex justify-content-between mt-1">
                       <span className="font-weight-bold">Total</span>
                       <span className="font-weight-bold text-success">
-                        {orderDetails.total + 50} Tk.
+                        {orderDetails?.total + 50} Tk.
                       </span>
                     </div>
                   </div>

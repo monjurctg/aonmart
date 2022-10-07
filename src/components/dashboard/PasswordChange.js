@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Message from './../master/message/Message';
-import { handleChangePasswordInput, updatedPassword } from './_redux/action/UserAction';
 import SmallLoading from './../master/simpleLoading/SmallLoading';
+import { handleChangePasswordInput, updatedPassword } from './_redux/action/UserAction';
 
 const PasswordChange = () => {
 
@@ -124,7 +123,7 @@ const PasswordChange = () => {
                         {
                             !isUpdating && (
                                 <div>
-                                    <button type="submit" className="submit">Changet</button>
+                                    <button type="submit" className="submit">Change</button>
                                 </div>
                             )
                         }

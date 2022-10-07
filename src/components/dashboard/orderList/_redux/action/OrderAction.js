@@ -92,7 +92,7 @@ export const orderlistByStatus = (order_status = null) => (dispatch) => {
     };
 
       try {
-      Axios.get(`${baseURL}/orders/${order_id}`, config)
+      Axios.get(`${baseURL}/orders`, config)
         .then((res) => {
           if (res.status) {
             response.data = res.data.data;

@@ -13,6 +13,7 @@ const AddressBook = ({ address_title = null }) => {
   const dispatch = useDispatch();
   const [addressModal, setAddressModal] = useState(false);
   const [editAddressModal, setEditAddressModal] = useState(false);
+  const [editAddress, setEditAddress] = useState(null);
   const addressList = useSelector((state) => state.UserReducer.addressList);
   const loadingAddress = useSelector(
     (state) => state.UserReducer.loadingAddress
@@ -25,11 +26,13 @@ const AddressBook = ({ address_title = null }) => {
   const handleShowAddressModal = () => {
     setAddressModal(true);
   };
-  const handleShowEditAddressModal = () => {
+  const handleShowEditAddressModal = (data) => {
+    setEditAddress(data);
     setEditAddressModal(true);
   };
   const handleClose = () => {
     setAddressModal(false);
+    setEditAddress(null)
     setEditAddressModal(false);
   };
 
@@ -114,7 +117,7 @@ const AddressBook = ({ address_title = null }) => {
                       type="button"
                       data-toggle="modal"
                       data-target="#address-edit"
-                      onClick={() => handleShowEditAddressModal()}
+                      onClick={() => handleShowEditAddressModal(address)}
                     >
                       <i className="fas fa-edit"></i>
                     </button>
@@ -162,7 +165,7 @@ const AddressBook = ({ address_title = null }) => {
         onHide={handleClose}
         isCloseButton={true}
       >
-        <EditAddress handleClose={handleClose} />
+        <EditAddress address={editAddress} handleClose={handleClose} />
       </SimpleModel>
     </React.Fragment>
   );

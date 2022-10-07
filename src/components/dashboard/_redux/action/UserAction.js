@@ -324,66 +324,94 @@ export const handleChangeAddressInput = (name, value) => (dispatch) => {
  * @param {addressInput} object
  * @returns addNewAddress
  */
-export const addNewAddress = (newAddressInput, handleClose) => (dispatch) => {
-  let responseData = {
-    isLoading: true,
-    status: false,
-  };
-
-  dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
-
-  const login_data = JSON.parse(localStorage.getItem("loginData"));
-
-  if (
-    typeof login_data !== "undefined" &&
-    login_data !== null &&
-    login_data !== ""
-  ) {
-    const access_token = login_data.userData.access_token;
-    // const id = login_data.userData.data.id
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-        Accept: "application/json",
-      },
+export const addNewAddress =
+  (newAddressInput, handleClose, type) => (dispatch) => {
+    let responseData = {
+      isLoading: true,
+      status: false,
     };
 
-    let getAddress = newAddressInput;
+    dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
 
-    if (newAddressInput.is_default === "true") {
-      getAddress.is_default = true;
+    const login_data = JSON.parse(localStorage.getItem("loginData"));
+
+    if (
+      typeof login_data !== "undefined" &&
+      login_data !== null &&
+      login_data !== ""
+    ) {
+      const access_token = login_data.userData.access_token;
+      // const id = login_data.userData.data.id
+
+      const config = {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          Accept: "application/json",
+        },
+      };
+
+      let getAddress = newAddressInput;
+      console.log('getAddress :>> ', getAddress);
+
+      if (newAddressInput.is_default === "true") {
+        getAddress.is_default = true;
+      } else {
+        getAddress.is_default = false;
+      }
+
+      if (type === "update") {
+        Axios.put(`${baseURL}/address-update`, getAddress, config)
+          .then((res) => {
+            if (res.status) {
+              responseData.isLoading = false;
+              responseData.status = true;
+              showToast("success", res.data.message);
+              dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
+              dispatch(getAllAdderss());
+              dispatch(handleClose());
+            }
+          })
+          .catch((error) => {
+            let responseLog = error.response;
+            responseData.isLoading = false;
+            if (typeof responseLog !== "undefined") {
+              const { request, ...errorObject } = responseLog;
+              showToast("error", responseLog.data.message);
+              if (responseLog.data.error) {
+                showToast("error", responseLog.data.error);
+              }
+              dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
+            }
+          });
+      } else {
+        Axios.post(`${baseURL}/address-save`, getAddress, config)
+          .then((res) => {
+            if (res.status) {
+              responseData.isLoading = false;
+              responseData.status = true;
+              showToast("success", res.data.message);
+              dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
+              dispatch(getAllAdderss());
+              dispatch(handleClose());
+            }
+          })
+          .catch((error) => {
+            let responseLog = error.response;
+            responseData.isLoading = false;
+            if (typeof responseLog !== "undefined") {
+              const { request, ...errorObject } = responseLog;
+              showToast("error", responseLog.data.message);
+              if (responseLog.data.error) {
+                showToast("error", responseLog.data.error);
+              }
+              dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
+            }
+          });
+      }
     } else {
-      getAddress.is_default = false;
+      showToast("error", "Please login first");
     }
-
-    Axios.post(`${baseURL}/address-save`, getAddress, config)
-      .then((res) => {
-        if (res.status) {
-          responseData.isLoading = false;
-          responseData.status = true;
-          showToast("success", res.data.message);
-          dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
-          dispatch(getAllAdderss());
-          dispatch(handleClose());
-        }
-      })
-      .catch((error) => {
-        let responseLog = error.response;
-        responseData.isLoading = false;
-        if (typeof responseLog !== "undefined") {
-          const { request, ...errorObject } = responseLog;
-          showToast("error", responseLog.data.message);
-          if (responseLog.data.error) {
-            showToast("error", responseLog.data.error);
-          }
-          dispatch({ type: Types.ADD_NEW_ADDRESS, payload: responseData });
-        }
-      });
-  } else {
-    showToast("error", "Please login first");
-  }
-};
+  };
 
 /**
  * @returns getAllAdderss

@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import Invoice from "../components/dashboard/orderList/Invoice";
@@ -18,21 +19,30 @@ const OrderDetailsPage = () => {
   const isLoading = useSelector((state) => state.OrderReducer.isLoading);
   const [statusBg, setStatusBg] = useState("deliveredBg");
   const [show, setShow] = useState(false);
+  const [selectedData, setselectedData] = useState(null);
   const [feed, setfeed] = useState(false);
+  const [fId, setfId] = useState(null);
   const [content, setcontent] = useState();
 
-  const handleShowInvoice = () => {
+  const handleShowInvoice = (data) => {
+    setselectedData(data);
     setShow(true);
   };
 
-  const handleShowFeed = () => {
+  const handleShowFeed = (id) => {
+    setfId(id);
     setfeed(true);
+  };
+
+  const handleCloseFeed = () => {
+    setfeed(false);
   };
   const handleCloseInvoice = () => {
     setShow(false);
+    setselectedData(null);
   };
 
-  let feedback = async (id, data) => {
+  let feedback = async (data) => {
     const access_token = JSON.parse(localStorage.getItem("access_token"));
     const storeId = JSON.parse(localStorage.getItem("storeInformation"));
     // console.log('storeId', storeId.storeID)
@@ -63,21 +73,22 @@ const OrderDetailsPage = () => {
       if (res.status === 200) {
         showToast("success", res.data.message);
         setfeed(false);
+        setfId(null);
       } else {
         showToast("error", res.data.message);
       }
 
-      console.log("res", res);
+      // console.log("res", res);
     }
   };
   const submitFeedBack = () => {
     let value = {
       content,
       reference: "ORDER",
-      reference_id: id,
+      reference_id: fId,
     };
 
-    feedback(id, value);
+    feedback(fId, value);
   };
 
   useEffect(() => {
@@ -96,158 +107,147 @@ const OrderDetailsPage = () => {
     }
   }, [orderDetails]);
 
+  // console.log("orderDetails :>> ", orderDetails);
+  let tdata = "";
+  if (orderDetails?.length > 0) {
+    tdata = orderDetails.map((item, index) => {
+      return (
+        <tr key={index}>
+          <td style={{ fontWeight: "600" }}>#{item.id}</td>
+          <td>{item.details[0]?.name}</td>
+          <td>
+            <p
+              style={
+                item.order_status === "Processing"
+                  ? {
+                      background: "#ff9800",
+                      borderRadius: "5px",
+                      color: "white",
+                      padding: "3px 10px",
+                      fontSize: "13px",
+                      fontWeight: "600",
+                    }
+                  : {}
+              }
+            >
+              {item.order_status}
+            </p>
+          </td>
+          <td>
+            <p
+              style={{
+                background: "#000",
+
+                color: "white",
+                padding: "3px 9px",
+                borderRadius: "5px",
+              }}
+            >
+              {item.payment_status}
+            </p>
+          </td>
+          <td>{item.payment_method}</td>
+          <td>{item.processing_at}</td>
+          <td>{item.delivered_at}</td>
+          <td>{item.total}tk</td>
+          <td>
+            <div className="d-flex justify-content-end mt-3">
+              <>
+                <button
+                  className="review"
+                  onClick={() => handleShowInvoice(item)}
+                >
+                  Invoice
+                </button>
+
+                <button
+                  className="review"
+                  onClick={() => handleShowFeed(item.id)}
+                >
+                  Feedback
+                </button>
+              </>
+            </div>
+          </td>
+        </tr>
+      );
+    });
+  }
   return (
     <DashboardLayout>
-      <React.Fragment>
-        {typeof orderDetails !== "undefined" &&
-          orderDetails !== null &&
-          orderDetails !== "" && (
-            <div className="order-card mb-3 show">
-              <div className="order-card-header d-flex justify-content-between align-items-center">
-                <span className={`order_status ${statusBg}`}>
-                  {orderDetails.order_status}
-                </span>
-                <span className="date">
-                  <i className="far fa-clock"></i> 09/21/2021
-                </span>
-              </div>
-              <div className="order-card-body">
-                <table>
-                  <thead>
-                    <tr>
-                      <th className="text-center">Orders:</th>
-                      <th className="text-center">Items:</th>
-                      <th className="text-right">Total Payments</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="text-center">#{orderDetails.order_no}</td>
-                      <td className="text-center">
-                        {orderDetails.details.length} Items
-                      </td>
-                      <td className="text-right">
-                        TK {orderDetails.total + 50}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="order-info-extra mt--20">
-                  {orderDetails.details.length > 0 &&
-                    orderDetails.details.map((order, index2) => (
-                      <div className="product_order_sub_container">
-                        <div className="row">
-                          <div className="col-md-2 text-center">
-                            <h6>Image</h6>z
-                            <ul>
-                              <li>
-                                <img
-                                  src={order.image}
-                                  alt={order.name}
-                                  className="img-fluid"
-                                />
-                              </li>
-                            </ul>
-                          </div>
-                          <div className="col-md-2 text-center">
-                            <h6>Product Id</h6>
-                            <ul>
-                              <li>{order.product_id}</li>
-                            </ul>
-                          </div>
-                          <div className="col-md-5 text-center">
-                            <h6>Name</h6>
-                            <ul>
-                              {/* <li> Product ID : {order.product_id}</li> */}
-                              <li> {order.name}</li>
-                              {/* <li>
-                                <img
-                                  src={order.image}
-                                  alt={order.name}
-                                  className="img-fluid"
-                                />
-                              </li> */}
-                            </ul>
-                          </div>
-                          <div className="col-md-2 text-center">
-                            <h6>Quantity</h6>
-                            <ul>
-                              <li>{order.qty}</li>
-                            </ul>
-                            {/*  */}
-                          </div>
-                          <div className="col-md-1">
-                            <h6>Price</h6>
-                            <ul>
-                              <li className="text-center">{order.price}</li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  <div className="d-flex justify-content-end mt-3">
-                    {!feed ? (
-                      <>
-                        <button
-                          className="review"
-                          onClick={() => handleShowInvoice()}
-                        >
-                          Invoice
-                        </button>
-
-                        <button
-                          className="review"
-                          onClick={() => handleShowFeed()}
-                        >
-                          Feedback
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        <input
-                          type={"text"}
-                          className="orderCancle"
-                          name="content"
-                          onChange={(e) => setcontent(e.target.value)}
-                        />
-                        <button className="review" onClick={submitFeedBack}>
-                          Feedback
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </div>
-              {/* <div class="order-card-footer">
-                                <div class="text-center pointer" onClick={() => setHideMoreDetails(!hideMoreDetails)} >
-                                    <span class="view">
-                                        {
-                                            hideMoreDetails === false ? "View More" : "Show Less"
-                                        }
-                                    </span>
-                                </div>
-                            </div> */}
-            </div>
-          )}
-        <div className="order-card">
-          {isLoading && (
-            <div className="p-3">
-              <SimpleLoading type="spokes" />
-            </div>
-          )}
-        </div>
-        <SimpleModel
-          show={show}
-          handleClose={handleCloseInvoice}
-          size="lg"
-          onHide={() => handleCloseInvoice}
+      <div
+        style={{ boxShadow: "1px 1px 13px -4px #9e9e9e", borderRadius: "10px" }}
+      >
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>name</th>
+              <th>Status</th>
+              <th>Payment Status</th>
+              <th>Method</th>
+              <th>Order Date</th>
+              <th>Delivery Date</th>
+              <th>Quantity</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>{tdata}</tbody>
+        </Table>
+      </div>
+      <div className="order-card">
+        {isLoading && (
+          <div className="p-3">
+            <SimpleLoading type="spokes" />
+          </div>
+        )}
+      </div>
+      <SimpleModel
+        show={show}
+        handleClose={handleCloseInvoice}
+        size="lg"
+        onHide={() => handleCloseInvoice}
+      >
+        <Invoice handleClose={handleCloseInvoice} orderDetails={selectedData} />
+      </SimpleModel>
+      <SimpleModel
+        show={feed}
+        handleClose={handleCloseFeed}
+        size="lg"
+        onHide={() => handleCloseFeed}
+      >
+        <div
+          style={{
+            marginTop: "50px",
+            width: "258px",
+          }}
         >
-          <Invoice
-            handleClose={handleCloseInvoice}
-            orderDetails={orderDetails}
+          <input
+            style={{
+              width: "100%",
+              margin: "14px 0px",
+              padding: "5px",
+              borderRadius: "5px",
+            }}
+            type={"text"}
+            className="orderCancle"
+            name="content"
+            placeholder="Write your feedback"
+            onChange={(e) => setcontent(e.target.value)}
           />
-        </SimpleModel>
-      </React.Fragment>
+        </div>
+        <button
+          className="review"
+          style={{
+            width: "100%",
+            margin: "auto",
+          }}
+          onClick={submitFeedBack}
+        >
+          Feedback
+        </button>
+        {/* <Invoice handleClose={handleCloseInvoice} orderDetails={selectedData} /> */}
+      </SimpleModel>
     </DashboardLayout>
   );
 };

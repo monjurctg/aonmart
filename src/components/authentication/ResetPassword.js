@@ -50,7 +50,7 @@ const ResetPassword = () => {
             <input
               type="email"
               name="email"
-              placeholder="Enter your mobile number"
+              placeholder="Enter your email"
               ref={register({ required: true })}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
