@@ -13,6 +13,7 @@ import {
 } from "./_redux/action/UserAction";
 
 const EditAddress = ({address, handleClose}) => {
+  const [loading, setLoading] = useState(false);
   const [editAdress, setEditAdress] = useState({
     address_id: address?.id,
     address: address?.address,
@@ -48,9 +49,12 @@ const EditAddress = ({address, handleClose}) => {
         Accept: "application/json",
       },
     };
+    setLoading(true);
 
     const res = await axios.put("/address-edit", editAdress, config);
     if (res.status === 200) {
+      setLoading(false);
+
       dispatch(getAllAdderss());
       handleClose(true);
     }
@@ -110,7 +114,7 @@ const EditAddress = ({address, handleClose}) => {
 
           <div className="col-md-12 d-flex">
             {/* <button type="submit" className="submit">Save</button> */}
-            {addingNewAddress === true && (
+            {loading === true && (
               <div>
                 <button
                   type="button"
@@ -129,7 +133,7 @@ const EditAddress = ({address, handleClose}) => {
                 </button>
               </div>
             )}
-            {addingNewAddress === false && (
+            {loading === false && (
               <button type="submit" className="submit">
                 Save
               </button>
