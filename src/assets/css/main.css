@@ -2714,11 +2714,13 @@ h2.wishlist_delete_title {
 
 .client_feedback_container .client_feedback_inner .client_feedback_profile {
   width: 33.33%;
+  object-fit: fill;
 }
 .client_feedback_container .client_feedback_inner .client_feedback_profile img {
   height: 160px;
   width: 160px;
   border-radius: 50%;
+  object-fit: fill;
 }
 .client_feedback_container .client_feedback_inner .client_feedback_des {
   background-color: #eee;

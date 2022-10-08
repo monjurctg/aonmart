@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from "react";
+import React, {useEffect, useReducer} from "react";
 // import topBanner from "../../assets/images/static_img/landingBannerTop.jpg";
 import banner1 from "../../assets/images/static_img/_mpimage (1).webp";
 import banner2 from "../../assets/images/static_img/_mpimage.webp";
@@ -6,7 +6,7 @@ import BannerServices from "./api";
 
 const LandingBannerTop = () => {
   const [state, setState] = useReducer(
-    (state, newState) => ({ ...state, ...newState }),
+    (state, newState) => ({...state, ...newState}),
     {
       bannerTop: null,
       sub_banner_one: banner1,
@@ -53,11 +53,8 @@ const LandingBannerTop = () => {
           style={{
             backgroundImage: `url(${state.bannerTop})`,
             backgroundSize: `${state.size}`,
-            backgroundPosition: "center"
-            
-          }}
-        >
-
+            backgroundPosition: "center",
+          }}>
           <h3 className="landing_top_banner_title text-white">
             A Trusted Source For All Your Family Needs
           </h3>
@@ -66,10 +63,18 @@ const LandingBannerTop = () => {
         <div className="container-fluid">
           <div className="row landing_top_inner_banner">
             <div className="col-lg-6 landing_top_inner_banner_img">
-              <img src={state.sub_banner_one} alt="Landing top banner" style={{objectFit:"fill"}} />
+              <img
+                src={state.sub_banner_one}
+                alt="Landing top banner"
+                style={{objectFit: "fill", height: "300px"}}
+              />
             </div>
             <div className="col-lg-6 landing_top_inner_banner_img">
-              <img src={state.sub_banner_two} alt="Landing top banner"  style={{objectFit:"fill"}} />
+              <img
+                src={state.sub_banner_two}
+                alt="Landing top banner"
+                style={{objectFit: "fill"}}
+              />
             </div>
           </div>
         </div>

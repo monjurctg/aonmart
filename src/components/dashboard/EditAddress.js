@@ -1,21 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { RHFInput } from "react-hook-form-input";
-import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import React, {useEffect, useState} from "react";
+import {useForm} from "react-hook-form";
+import {RHFInput} from "react-hook-form-input";
+import {useDispatch, useSelector} from "react-redux";
 import Select from "react-select";
-import { getDivision } from "../master/location/_redux/acition/LocationAction";
+import {getDivision} from "../master/location/_redux/acition/LocationAction";
 import SmallLoading from "../master/simpleLoading/SmallLoading";
 import {
-    addNewAddress,
-    handleChangeAddressInput
+  addNewAddress,
+  getAllAdderss,
+  handleChangeAddressInput,
 } from "./_redux/action/UserAction";
 
-const EditAddress = ({ address, handleClose }) => {
-  console.log("address :>> ", address);
+const EditAddress = ({address, handleClose}) => {
+  const [editAdress, setEditAdress] = useState({
+    address_id: address?.id,
+    address: address?.address,
+    is_default: address?.is_default,
+  });
   const dispatch = useDispatch();
-  const [addressNow, setaddressNow] = useState(address?.address);
 
-  const { register, errors, handleSubmit, setValue } = useForm();
+  const {register, errors, handleSubmit, setValue} = useForm();
   const newAddressInput = useSelector(
     (state) => state.UserReducer.newAddressInput
   );
@@ -23,13 +28,34 @@ const EditAddress = ({ address, handleClose }) => {
     (state) => state.UserReducer.addingNewAddress
   );
 
-  const handleLoginInputChange = (name, value) => {
-    dispatch(handleChangeAddressInput(name, value));
+  const handleLoginInputChange = (e) => {
+    setEditAdress({...editAdress, [e.target.name]: e.target.value});
+    console.log("");
+
     // dispatch(getDivision())
   };
 
-  const onSubmit = (data) => {
-    dispatch(addNewAddress(newAddressInput, handleClose, "update"));
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const login_data = JSON.parse(localStorage.getItem("loginData"));
+
+    const access_token = login_data.userData.access_token;
+    // const id = login_data.userData.data.id
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        Accept: "application/json",
+      },
+    };
+
+    const res = await axios.put("/address-edit", editAdress, config);
+    if (res.status === 200) {
+      dispatch(getAllAdderss());
+      handleClose(true);
+    }
+
+    // dispatch(addNewAddress(newAddressInput, handleClose, "update"));
   };
 
   useEffect(() => {
@@ -37,8 +63,8 @@ const EditAddress = ({ address, handleClose }) => {
   }, []);
 
   const isDefault = [
-    { label: "Yes", value: "true" },
-    { label: "No", value: "false" },
+    {label: "Yes", value: "true"},
+    {label: "No", value: "false"},
   ];
 
   return (
@@ -50,8 +76,7 @@ const EditAddress = ({ address, handleClose }) => {
         className="profile-form"
         autoComplete="off"
         autoSave="off"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+        onSubmit={onSubmit}>
         <div className="row">
           <div className="col-md-12">
             <div className="input-item">
@@ -59,29 +84,25 @@ const EditAddress = ({ address, handleClose }) => {
               <textarea
                 className="address_Input"
                 name="address"
-                value={addressNow}
-                onChange={(e) => {
-                  setaddressNow(e.target.value);
-                  handleLoginInputChange("address", e.target.value);
-                }}
-              ></textarea>
+                value={editAdress?.address}
+                onChange={handleLoginInputChange}></textarea>
             </div>
           </div>
 
           <div className="col-md-12">
             <div className="input-item">
-              <label>Is this your default address? </label>
+              <label>Is this your address? </label>
               <RHFInput
+                name="is_default"
+                onChange={(e) =>
+                  setEditAdress({...editAdress, is_default: e.value ? 1 : 0})
+                }
                 as={<Select options={isDefault} />}
                 placeholder="Select Default Address"
-                rules={{ required: true }}
-                name="is_default"
+                rules={{required: true}}
                 className="address_Input"
                 register={register}
-                value={newAddressInput.is_default}
-                onChange={(option) => {
-                  handleLoginInputChange("is_default", option.value);
-                }}
+                value={editAdress.is_default}
                 setValue={setValue}
               />
             </div>
@@ -94,8 +115,7 @@ const EditAddress = ({ address, handleClose }) => {
                 <button
                   type="button"
                   className="updating_btn not_allowed d-flex justify-content-center"
-                  disabled={true}
-                >
+                  disabled={true}>
                   <span>
                     {" "}
                     <SmallLoading
