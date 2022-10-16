@@ -85,7 +85,7 @@ const AddToWishlist = ({id, is_in_wishlist, setItemRemove}) => {
         if (res.status == 200) {
           setItemRemove(true);
           showToast("error", "Wishlist Remove successfully!");
-          // window.location.reload()
+          window.location.reload();
         }
       });
     }

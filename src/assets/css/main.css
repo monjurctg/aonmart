@@ -2364,8 +2364,9 @@ h2.wishlist_delete_title {
   /* background: url("../images/static_img/landingBannerTop.jpg"); */
   background-size: cover;
   padding-top: 100px;
-  position: relative;
-  height: 300px;
+  background-repeat: no-repeat;
+  /* position: relative; */
+  height: 400px;
 }
 
 .landing_top_banner .landing_top_banner_title {
@@ -2717,10 +2718,10 @@ h2.wishlist_delete_title {
   object-fit: fill;
 }
 .client_feedback_container .client_feedback_inner .client_feedback_profile img {
-  height: 160px;
-  width: 160px;
-  border-radius: 50%;
-  object-fit: fill;
+  height: 160px !important;
+  width: 160px !important;
+  border-radius: 50% !important;
+  object-fit: fill !important;
 }
 .client_feedback_container .client_feedback_inner .client_feedback_des {
   background-color: #eee;
@@ -2778,6 +2779,9 @@ h2.wishlist_delete_title {
   background-color: #cdcdcd;
   cursor: pointer;
   /* display: none; */
+}
+.img-thumbnail {
+  max-width: none !important;
 }
 .client_feedback_container .slick-slider .slick-dots li button {
   opacity: 0;

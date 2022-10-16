@@ -73,7 +73,7 @@ const LandingBannerTop = () => {
               <img
                 src={state.sub_banner_two}
                 alt="Landing top banner"
-                style={{objectFit: "fill"}}
+                style={{objectFit: "fill", height: "300px"}}
               />
             </div>
           </div>
