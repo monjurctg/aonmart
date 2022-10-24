@@ -135,7 +135,7 @@ export const loginAction = (loginInput) => (dispatch) => {
           dispatch({type: Types.AUTH_LOGIN_CHECK, payload: response});
           dispatch(getUserDataAction());
           dispatch(toggleModal(false));
-          // window.location.reload();
+          window.location.reload();
         }
       })
       .catch((error) => {

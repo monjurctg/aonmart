@@ -1,14 +1,13 @@
-/** @format */
+import React, {useEffect} from "react";
 
-import React, {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router";
-import {Dropdown, Nav, Sidenav} from "rsuite";
+import {useHistory} from "react-router-dom";
+import {Nav, Sidenav} from "rsuite";
+import Dropdown from "../Dropdown/Dropdown";
 import {getLocalSearchInfo} from "../Location&Store/_redux/action/Location&StoreAction";
-import "./SidebarMenu.css";
 import {getProductCategory} from "./_redux/Action/ProductSidebarAction";
 
-const SidebarMenu = ({isMenuOpen, setIsMenuOpen}) => {
+function SidebarTest({isMenuOpen}) {
   const history = useHistory();
   const dispatch = useDispatch();
   const categoryList = useSelector(
@@ -69,51 +68,12 @@ const SidebarMenu = ({isMenuOpen, setIsMenuOpen}) => {
                       {menu.sub_categories.length !== 0 &&
                       menu.sub_categories !== "undefined" ? (
                         <Dropdown
-                          eventKey={index + 1}
-                          title={menu.name}
-                          icon={
-                            <img
-                              src={menu.icon}
-                              alt={menu.name}
-                              className="product_sidebar_icon"
-                            />
+                          menu={menu}
+                          redirectSubCategory={handleRedirectToSubCategory}
+                          redirectSubSubCategory={
+                            handleRedirectToSubSubCategory
                           }
-                          key={index + 1}
-                          onClick={() => handleRedirectToSubCategory(menu)}>
-                          {menu.sub_categories.map((menu2, index2) =>
-                            menu2.sub_sub_categories.length > 0 ? (
-                              <Dropdown.Menu
-                                eventKey={menu2.id}
-                                title={menu2.name}
-                                key={index2 + 1}
-                                onClick={() =>
-                                  handleRedirectToSubSubCategory(menu2)
-                                }>
-                                {menu2.sub_sub_categories.map(
-                                  (menu3, index3) => (
-                                    <Dropdown.Item
-                                      eventKey={menu3.id}
-                                      active
-                                      key={index3 + 1}
-                                      onClick={() =>
-                                        handleRedirectToSubSubCategory(menu2)
-                                      }>
-                                      {menu3.name}
-                                    </Dropdown.Item>
-                                  )
-                                )}
-                              </Dropdown.Menu>
-                            ) : (
-                              <Dropdown.Item
-                                eventKey={menu2.id}
-                                onClick={() =>
-                                  handleRedirectToSubSubCategory(menu2)
-                                }>
-                                {menu2.name}
-                              </Dropdown.Item>
-                            )
-                          )}
-                        </Dropdown>
+                        />
                       ) : (
                         <Nav.Item
                           eventKey={menu.id}
@@ -137,6 +97,6 @@ const SidebarMenu = ({isMenuOpen, setIsMenuOpen}) => {
       </div>
     </div>
   );
-};
+}
 
-export default SidebarMenu;
+export default SidebarTest;

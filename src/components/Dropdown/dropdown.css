@@ -1,0 +1,42 @@
+.dropdown-container {
+}
+.single-drop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black !important;
+  border-bottom: 1px solid rgb(219, 214, 214);
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 0px 10px;
+}
+.dropList {
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+  font-size: 15px;
+}
+.dropListShow {
+  opacity: 1;
+}
+.sub-sub-category {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  padding: 7px 0px;
+}
+
+.sub-sub-category:hover {
+  background-color: rgb(192, 198, 196);
+}
+.sub-category {
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+}
+.sub-category:hover {
+  background-color: rgb(192, 198, 196);
+}

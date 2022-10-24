@@ -5,6 +5,7 @@ import FloatingCartButton from "../../components/cart/FloatingCartButton";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import SidebarMenu from "../../components/productSidebar/SidebarMenu";
+import SidebarTest from "../../components/productSidebar/SidebarTest";
 
 import "./MainLayout.css";
 
@@ -42,7 +43,8 @@ const MainLayout = ({children, title, description}) => {
         <div
           className={isMenuOpen === true ? "toggledMenu" : "isNotToggledMenu"}>
           {/* <ProductSidebar isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} /> */}
-          <SidebarMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+          {/* <SidebarMenu isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} /> */}
+          <SidebarTest isMenuOpen={isMenuOpen} />
         </div>
         <div
           className={

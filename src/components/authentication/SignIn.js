@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {useForm} from "react-hook-form";
+
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory, useLocation} from "react-router-dom";
 import {toggleModal} from "../../_redux/_global_store/action/GlobalAction";
 import Message from "./../master/message/Message";
 import SmallLoading from "./../master/simpleLoading/SmallLoading";
-import {handleLoginInput, loginAction} from "./_redux/Action/AuthAction";
+import {loginAction} from "./_redux/Action/AuthAction";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const SignIn = () => {
   const [showPass, setShowPass] = useState(false);
   const [errors, setErrors] = useState("");
 
-  const loginInput = useSelector((state) => state.AuthReducer.loginInput);
+  // const loginInput = useSelector((state) => state.AuthReducer.loginInput);
   const isLoading = useSelector((state) => state.AuthReducer.isLoading);
   const userData = useSelector((state) => state.UserDataReducer.userData);
 
